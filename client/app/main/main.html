@@ -1,0 +1,35 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<header class="hero-unit" id="banner">
+  <div class="container">
+    <h1>Device Library</h1>
+    <p class="lead">Keeping track of our Device Wall devices</p>
+    <img src="assets/images/sc5logo.svg" alt="SC5 Online">
+  </div>
+</header>
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Devices:</h1>
+      <table class="table">
+        <thead>
+        <tr><th>Name</th><th>Serial number</th><th>Attached</th></tr>
+        </thead>
+        <tbody ng-repeat="device in devices">
+          <tr>
+            <td>{{device.deviceName}}</td>
+            <td>{{device.serialNumber}}</td>
+            <td><span class="glyphicon" data-ng-class="{'glyphicon-ok': device.active, 'glyphicon-remove': !device.active}"></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>&copy; 2015 SC5 Online - Device library</p>
+  </div>
+</footer>
