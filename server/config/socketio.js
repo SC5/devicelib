@@ -5,7 +5,7 @@
 'use strict';
 
 var config = require('./environment');
-
+var serialPort = require('../api/rfid/serial.port');
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }
@@ -18,6 +18,9 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/rfid/rfid.socket').register(socket, serialPort);
+  //require('../api/loan/loan.socket').register(socket);
+  //require('../api/user/user.socket').register(socket);
   require('../api/device/device.socket').register(socket);
 }
 

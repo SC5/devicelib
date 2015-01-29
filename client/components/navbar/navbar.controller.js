@@ -5,6 +5,12 @@ angular.module('devicelibApp')
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
+    }, {
+      'title': 'History',
+      'link': '/history'
+    }, {
+      'title': 'Users',
+      'link': '/users'
     }];
 
     $scope.isCollapsed = true;

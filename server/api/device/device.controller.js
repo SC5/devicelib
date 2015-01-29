@@ -75,8 +75,10 @@ function findDevices(devices) {
       var query = {serialNumber: device.serialNumber};
       device.lastSeen = new Date();
       device.active = true;
-      Device.findOneAndUpdate(query, device, {upsert: true}, function(err, d) {
-        console.log(err, d);
+      Device.findOneAndUpdate(query, device, {upsert: true}, function(err) {
+        if (err) {
+          console.log("Error in find devices", err);
+        }
       });
     }
   }

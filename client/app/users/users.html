@@ -1,0 +1,20 @@
+<div class="container">
+  <div class="row">
+    <div class="col-lg-12">
+      <h1 class="page-header">Users</h1>
+      <p><a ng-href="/user">Add new user</a></p>
+      <table class="table">
+        <thead>
+        <tr><th>Name</th></tr>
+        </thead>
+        <tbody ng-repeat="user in users | orderBy:'name':0">
+          <tr>
+            <td><a ng-href="/user/{{user._id}}">{{user.name}}</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
