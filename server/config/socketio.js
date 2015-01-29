@@ -6,6 +6,26 @@
 
 var config = require('./environment');
 var serialPort = require('../api/rfid/serial.port');
+var messageController = require('../api/message/message.controller');
+
+var User = require('../api/user/user.model');
+serialPort.on('data', function(data) {
+  var query  = User.where({rfid: data});
+  query.findOne(function(err, user) {
+    if (err) {
+      console.log("error occurred while querying by rfid");
+    }
+    if (user) {
+      console.log("Found user", user);
+      messageController.registered(user);
+      user.active = true;
+      user.save();
+    } else {
+      messageController.unregistered();
+    }
+  });
+});
+
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
 }
@@ -18,9 +38,10 @@ function onConnect(socket) {
   });
 
   // Insert sockets below
+  require('../api/message/message.socket').register(socket);
   require('../api/rfid/rfid.socket').register(socket, serialPort);
   //require('../api/loan/loan.socket').register(socket);
-  //require('../api/user/user.socket').register(socket);
+  require('../api/user/user.socket').register(socket);
   require('../api/device/device.socket').register(socket);
 }
 
