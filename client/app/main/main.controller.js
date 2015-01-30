@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('MainCtrl', function ($scope, $http, socket, $timeout) {
+  .controller('MainCtrl', function ($scope, $http, socket, $timeout, rfid, $location) {
     $scope.devices = [];
     $scope.alerts = [];
     $scope.user = null;
@@ -29,10 +29,13 @@ angular.module('devicelibApp')
       if (user.active) {
         $scope.user = {name: user.name};
         $scope.showLoans = true;
+        rfid.user = user;
+        $location.path( "/loan" );
       }
     });
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('device');
+      socket.unsyncUpdates('message');
     });
   });
