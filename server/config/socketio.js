@@ -40,7 +40,7 @@ function onConnect(socket) {
   // Insert sockets below
   require('../api/message/message.socket').register(socket);
   require('../api/rfid/rfid.socket').register(socket, serialPort);
-  //require('../api/loan/loan.socket').register(socket);
+  require('../api/loan/loan.socket').register(socket);
   require('../api/user/user.socket').register(socket);
   require('../api/device/device.socket').register(socket);
 }

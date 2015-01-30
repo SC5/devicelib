@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Device = require('./device.model');
 var User = require('../user/user.model');
+var EventEmitter = require('events').EventEmitter;
 
 // Get list of devices
 exports.index = function(req, res) {
@@ -73,19 +74,24 @@ var udev;
 if (process.platform === 'linux') {
   udev = require('udev');
 } else { // so for dev purposes this fakes some devices for other platforms, no 'add' and 'remove' events :/
-  var EventEmitter = require('events').EventEmitter;
-  udev = new EventEmitter();
-  udev.list = function() {
-    return require('./dev.fixture');
-  };
-  var adds = true;
-  setInterval(function(){
-    udev.emit(adds?'add':'remove', udev.list()[0]);
-    adds = !adds;
-  }, 5000);
-}
+  udev = {
+    list: function() {
+      return require('./dev.fixture');
+    },
+    monitor: function() {
+      var emitter = new EventEmitter();
+      var adds = true;
+        setInterval(function(){
+          emitter.emit(adds?'add':'remove', udev.list()[0]);
+          adds = !adds;
+        }, 5000);
+      return emitter;
+    }
+  }
 
+}
 var devices = udev.list();
+var monitor = udev.monitor();
 
 Device.update({active: false}, function(err, d) {
   console.log("deactivated " + d.length + " devices");
@@ -124,7 +130,7 @@ function isMobileDevice(d) {
 
 var loanController = require('../loan/loan.controller');
 
-udev.on('add', function(device) {
+monitor.on('add', function(device) {
   if (isMobileDevice(device) === false) {
     return;
   }
@@ -149,7 +155,7 @@ udev.on('add', function(device) {
 
 
 
-udev.on('remove', function(device) {
+monitor.on('remove', function(device) {
   if (isMobileDevice(device) === false) {
     return;
   }

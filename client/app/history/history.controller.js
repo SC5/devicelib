@@ -5,6 +5,6 @@ angular.module('devicelibApp')
     $scope.loans = [];
     $http.get('/api/loans').success(function(loans) {
       $scope.loans = loans;
-      socket.syncUpdates('loans', $scope.loans);
+      socket.syncUpdates('loan', $scope.loans);
     });
   });

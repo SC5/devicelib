@@ -9,30 +9,42 @@ var serialPortOptions = {
   baudrate: 9600,
   flowControl: false
 };
+
+
+
 var EventEmitter =  require('events').EventEmitter;
+
+var emitter = new EventEmitter();
 
 var exists = fs.existsSync(device);
 if (exists) {
   serialPort = new SerialPort(device, serialPortOptions);
+  serialPort.on('open', function() {
+    console.log("Serial port device " + device + " okay");
+    serialPort.on('data', function(data) {
+      var strData;
+      console.log('RFID data received');
+      if (data.toString) {
+        strData = data.toString();
+      } else {
+        strData = ""+data;
+      }
+      emitter.emit('data', genHash(strData));
+    })
+  })
 } else { // fake rfid, just for development purposes
-  console.log("Serial port device does not exists, using timed interval rfid read events")
-  serialPort = new EventEmitter();
+  console.log("Serial port device "+ device+ " does not exists, using timed interval rfid read events")
   setTimeout(function() {
-    serialPort.emit('open');
     setInterval(function() {
-      var data = "0123456780" + random(100, 999);
-      data = "41e2d8ab19b78ebfca8b235df08e6f5b98b8afb7652bb7cc19477e264d1deda1";
-      //data = genHash(data);
-      console.log("emit", data);
-      serialPort.emit('data', data);
+      var data = genHash("0123456780");
+      console.log("fake emit rfid data", data);
+      emitter.emit('data', data);
     }, 5000);
   }, 3000);
 
 }
 
-function random (low, high) {
-  return Math.floor(Math.random() * (high - low) + low);
-}
+
 
 function genHash(str) {
   var shasum = crypto.createHash('sha256');
@@ -40,7 +52,4 @@ function genHash(str) {
   return shasum.digest('hex');
 }
 
-
-
-
-module.exports = serialPort;
+module.exports = emitter;
