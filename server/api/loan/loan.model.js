@@ -4,9 +4,11 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var LoanSchema = new Schema({
-  name: String,
-  info: String,
-  active: Boolean
+  deviceId: String,
+  deviceName: String,
+  userName: String,
+  start: Date,
+  end: Date
 });
 
 module.exports = mongoose.model('Loan', LoanSchema);

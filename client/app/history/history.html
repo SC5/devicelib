@@ -1,3 +1,20 @@
-<div class="col-md-12">
-This is the history view.
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Device history</h1>
+      <table class="table">
+        <thead>
+        <tr><th>Device</th><th>Lender</th><th>started</th><th>ended</th></tr>
+        </thead>
+        <tbody ng-repeat="loan in loans | orderBy:'start':0">
+          <tr>
+            <td>{{loan.deviceName}}</td>
+            <td>{{loan.userName}}</td>
+            <td>{{loan.start | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+            <td>{{loan.end | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

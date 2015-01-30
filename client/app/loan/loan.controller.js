@@ -6,7 +6,7 @@ angular.module('devicelibApp')
       $location.path('/');
       return;
     }
-    $http.get('/api/devices?active=true').success(function(devices) {
+    $http.get('/api/devices').success(function(devices) {
       $scope.devices = devices;
       socket.syncUpdates('device', $scope.devices);
     });
