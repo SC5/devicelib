@@ -4,48 +4,31 @@
 
 'use strict';
 
-var config = require('./environment');
-var serialPort = require('../api/rfid/serial.port');
-var messageController = require('../api/message/message.controller');
-
-var User = require('../api/user/user.model');
-serialPort.on('data', function(data) {
-  var query  = User.where({rfid: data});
-  query.findOne(function(err, user) {
-    if (err) {
-      console.log("error occurred while querying by rfid");
-    }
-    if (user) {
-      console.log("Found user", user);
-      messageController.registered(user);
-      user.active = true;
-      user.save();
-    } else {
-      messageController.unregistered();
-    }
-  });
-});
+var config = require('./../../config/environment/index');
+var messageController = require('../../api/message/message.controller.js');
+var User = require('../../api/user/user.model.js');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
+
 }
 
 // When the user connects.. perform this
-function onConnect(socket) {
+function onConnect(socket, serialPort) {
   // When the client emits 'info', this listens and executes
   socket.on('info', function (data) {
     console.info('[%s] %s', socket.address, JSON.stringify(data, null, 2));
   });
 
   // Insert sockets below
-  require('../api/message/message.socket').register(socket);
-  require('../api/rfid/rfid.socket').register(socket, serialPort);
-  require('../api/loan/loan.socket').register(socket);
-  require('../api/user/user.socket').register(socket);
-  require('../api/device/device.socket').register(socket);
+  require('../../api/message/message.socket.js').register(socket);
+  require('../../api/rfid/rfid.socket.js').register(socket, serialPort);
+  require('../../api/loan/loan.socket.js').register(socket);
+  require('../../api/user/user.socket.js').register(socket);
+  require('../../api/device/device.socket.js').register(socket);
 }
 
-module.exports = function (socketio) {
+module.exports = function (socketio, serialPort) {
   // socket.io (v1.x.x) is powered by debug.
   // In order to see all the debug output, set DEBUG (in server/config/local.env.js) to including the desired scope.
   //
@@ -61,6 +44,24 @@ module.exports = function (socketio) {
   //   handshake: true
   // }));
 
+  // RFID serial handler
+  serialPort.on('data', function(data) {
+    var query  = User.where({rfid: data});
+    query.findOne(function(err, user) {
+      if (err) {
+        console.log("error occurred while querying by rfid");
+      }
+      if (user) {
+        console.log("Found user", user);
+        messageController.registered(user);
+        user.active = true;
+        user.save();
+      } else {
+        messageController.unregistered();
+      }
+    });
+  });
+
   socketio.on('connection', function (socket) {
     socket.address = socket.handshake.address !== null ?
             socket.handshake.address.address + ':' + socket.handshake.address.port :
@@ -75,7 +76,7 @@ module.exports = function (socketio) {
     });
 
     // Call onConnect.
-    onConnect(socket);
+    onConnect(socket, serialPort);
     console.info('[%s] CONNECTED', socket.address);
   });
 };

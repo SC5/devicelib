@@ -19,13 +19,16 @@ if(config.seedDB) { require('./config/seed'); }
 // Setup server
 var app = express();
 var server = require('http').createServer(app);
+var serialPort = require('./components/rfid/serial.port');
 var socketio = require('socket.io')(server, {
   serveClient: (config.env === 'production') ? false : true,
   path: '/socket.io-client'
 });
-require('./config/socketio')(socketio);
+
+require('./components/socketio/socketio')(socketio, serialPort);
 require('./config/express')(app);
 require('./routes')(app);
+require('./components/usb/usb');
 
 // Start server
 server.listen(config.port, config.ip, function () {
