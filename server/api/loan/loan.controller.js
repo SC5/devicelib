@@ -54,6 +54,25 @@ exports.destroy = function(req, res) {
   });
 };
 
+exports.loanStart = function(device) {
+  var query = {
+    deviceId: device._id,
+    deviceName: device.name,
+    userName: device.loanedBy,
+    start: new Date()
+  };
+  Loan.create(query);
+}
+
+exports.loanEnd = function(device) {
+  console.log("ending loan", device);
+  Loan.findOneAndUpdate({deviceId: device._id, end: null}, {end: new Date()}, function(err, doc){
+    if (err) {
+      console.log("something wrong with loanEnd", err);
+    }
+    console.log("ended loan", doc)
+  });
+}
 function handleError(res, err) {
   return res.send(500, err);
 }
