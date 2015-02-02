@@ -1,77 +1,50 @@
 var Device = require('./../../api/device/device.model.js');
 var User = require('../../api/user/user.model.js');
 var messages = require('../../api/message/message.controller.js');
-var EventEmitter = require('events').EventEmitter;
+var loanController = require('../../api/loan/loan.controller.js');
 
+var usbReader;
 // udev is linux only stuff
-var udev;
-if (process.platform === 'linux') {
-  udev = require('udev');
-} else { // so for dev purposes this fakes some devices for other platforms, no 'add' and 'remove' events :/
-  udev = {
-    list: function() {
-      return require('./../../api/device/dev.fixture.js');
-    },
-    monitor: function() {
-      var emitter = new EventEmitter();
-      var adds = true;
-      setInterval(function(){
-        //emitter.emit(adds?'add':'remove', udev.list()[0]);
-        adds = !adds;
-      }, 5000);
-      return emitter;
-    }
-  }
 
+if (process.platform === 'linux') {
+  usbReader = require('./udev');
+} else {
+  usbReader = require('./usb.detection');
 }
-var devices = udev.list();
-var monitor = udev.monitor();
+
+
+function findDevicesHandler(devices) {
+  for (var i = 0; i < devices.length; ++i) {
+    var device = devices[i];
+    var query = {serialNumber: device.serialNumber};
+    device.lastSeen = new Date();
+    device.active = true;
+    Device.findOneAndUpdate(query, device, {upsert: true}, function(err) {
+      if (err) {
+        console.log("Error in find devices", err);
+      }
+    });
+
+  }
+  console.log(devices.length + " mobile devices detected");
+}
 
 Device.update({active: false}, function(err, d) {
-  console.log("deactivated " + d.length + " devices");
-  findDevices(devices);
+  if (d) {
+    console.log("deactivated " + d.length + " devices");
+  }
+  usbReader.findDevices(findDevicesHandler);
 });
 
 
-function findDevices(devices) {
-  var len = 0;
-  for (var i = 0; i < devices.length; ++i) {
-    var device = devices[i];
-    if (isMobileDevice(device)) {
-      len = len + 1;
-      console.log(
-        device.ID_MODEL_FROM_DATABASE,
-        device.ID_MODEL,
-        device.ID_SERIAL_SHORT
-      );
-      var query = {serialNumber: device.ID_SERIAL_SHORT};
-      device.lastSeen = new Date();
-      device.active = true;
-      Device.findOneAndUpdate(query, createFromUDEVObject(device), {upsert: true}, function(err) {
-        if (err) {
-          console.log("Error in find devices", err);
-        }
-      });
-    }
-  }
-  console.log(len + " mobile devices detected");
-}
-
-function isMobileDevice(d) {
-  return d.DEVTYPE === 'usb_device' &&
-    /(iphone|android|sailfish|nokia|ipad)/i.test(d.ID_SERIAL);
-}
-
-var loanController = require('../../api/loan/loan.controller.js');
-
-monitor.on('add', function(device) {
-  if (isMobileDevice(device) === false) {
-    return;
-  }
-  var query = {serialNumber: device.ID_SERIAL_SHORT};
+usbReader.on('add', function(device) {
+  console.log("USB ATTACHED", device);
+  var query = {serialNumber: device.serialNumber};
+  console.log("querying", device);
   Device.findOne(query, function(err, doc) {
     if (doc === null) {
-      Device.create(createFromUDEVObject(device), function (err) {
+      console.log("device not found, saving");
+      Device.create(device, function (err) {
         if (err) {
           console.log("error saving doc", doc)
         }
@@ -87,11 +60,9 @@ monitor.on('add', function(device) {
   })
 });
 
-monitor.on('remove', function(device) {
-  if (isMobileDevice(device) === false) {
-    return;
-  }
-  var query = {serialNumber: device.ID_SERIAL_SHORT};
+usbReader.on('remove', function(device) {
+  console.log("USB DEATTACHED", device);
+  var query = {serialNumber: device.serialNumber};
   Device.findOne(query, function(err, doc) {
     doc.active = false;
     console.log("device deattached")
@@ -124,14 +95,3 @@ function setLoan(cb) {
   })
 }
 
-function createFromUDEVObject(dev) {
-  return {
-    "name": dev.ID_MODEL,
-    "serialNumber" : dev.ID_SERIAL_SHORT,
-    "vendorId" : dev.ID_VENDOR || dev.ID_VENDOR_ID,
-    "deviceName" : dev.ID_MODEL,
-    "manufacturer" : dev.VENDOR_FROM_DATABASE || dev.ID_VENDOR || dev.ID_VENDOR_ID,
-    "lastSeen" : new Date(),
-    "active" : true
-  };
-}
