@@ -54,11 +54,11 @@ exports.destroy = function(req, res) {
   });
 };
 
-exports.loanStart = function(device, user) {
+exports.loanStart = function(device) {
   var query = {
     deviceId: device._id,
     deviceName: device.name,
-    userName: user.name,
+    userName: device.loanedBy,
     start: new Date()
   };
   Loan.create(query);

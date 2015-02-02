@@ -11,3 +11,7 @@ exports.registered = function(user) {
 exports.unregistered = function() {
   Message.emit('message', {title: "Unregistered tag", body: "Register your tag to your name", type: "danger"});
 };
+
+exports.deviceRemovedWithoutTag = function() {
+  Message.emit('message', {title: "Device removed without tag", body: "Register your tag to your name", type: "danger"});
+};

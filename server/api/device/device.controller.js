@@ -4,6 +4,7 @@ var _ = require('lodash');
 var Device = require('./device.model');
 var User = require('../user/user.model');
 var EventEmitter = require('events').EventEmitter;
+var messages = require('../message/message.controller');
 
 // Get list of devices
 exports.index = function(req, res) {
@@ -82,7 +83,7 @@ if (process.platform === 'linux') {
       var emitter = new EventEmitter();
       var adds = true;
         setInterval(function(){
-          emitter.emit(adds?'add':'remove', udev.list()[0]);
+          //emitter.emit(adds?'add':'remove', udev.list()[0]);
           adds = !adds;
         }, 5000);
       return emitter;
@@ -163,10 +164,12 @@ monitor.on('remove', function(device) {
   Device.findOne(query, function(err, doc) {
     doc.active = false;
     console.log("device deattached")
-    setLoan(doc, function(user) {
+    setLoan(function(user) {
       if (user) {
         doc.loanedBy = user.name;
-        loanController.loanStart(doc, user);
+        loanController.loanStart(doc);
+      } else {
+        messages.deviceRemovedWithoutTag();
       }
       updateDevice(doc);
     });
@@ -180,7 +183,7 @@ function updateDevice(doc) {
   }
 }
 
-function setLoan(doc, cb) {
+function setLoan(cb) {
   User.findOne({active:true}, function(err, user) {
     if (err) {
       console.log("error while querying users", err);
