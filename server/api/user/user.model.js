@@ -5,7 +5,9 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new Schema({
   name: String,
+  email: String,
   rfid: String,
+  gravatar: { data: Buffer, contentType: String },
   active: Boolean
 });
 
