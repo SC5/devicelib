@@ -33,18 +33,8 @@ if (exists) {
     })
   })
 } else { // fake rfid, just for development purposes
-  console.log("Serial port device "+ device+ " does not exists, using timed interval rfid read events")
-  setTimeout(function() {
-    //setInterval(function() {
-      var data = genHash("0123456780");
-      console.log("fake emit rfid data", data);
-      emitter.emit('data', data);
-    //}, 5000);
-  }, 10000);
-
+  console.error('No serial port device detected at' + device);
 }
-
-
 
 function genHash(str) {
   var shasum = crypto.createHash('sha256');
