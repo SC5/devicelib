@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('MainCtrl', function ($scope, $http, socket, $timeout, rfid, $location) {
+  .controller('MainCtrl', function ($scope, $http, socket, $timeout, rfid, $location, $log, Device) {
     $scope.devices = [];
     $scope.alerts = [];
     $scope.user = null;
@@ -38,4 +38,12 @@ angular.module('devicelibApp')
       socket.unsyncUpdates('device');
       socket.unsyncUpdates('message');
     });
+
+    $scope.clientFieldChanged = function(model) {
+      $log.debug(model);
+      var device = Device.get({id:model._id}, function() {
+        device = angular.extend(device, model);
+        device.$update();
+      });
+    };
   });

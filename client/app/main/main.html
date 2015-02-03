@@ -7,11 +7,12 @@
       <h1 class="page-header">Devices:</h1>
       <table class="table">
         <thead>
-        <tr><th>Name</th><th>Serial number</th><th>Attached</th></tr>
+        <tr><th>Label</th><th>Name</th><th>Serial number</th><th>Attached</th></tr>
         </thead>
         <tbody ng-repeat="device in devices | orderBy:'deviceName':0">
           <tr>
-            <td>{{device.deviceName}}</td>
+            <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.label" /></td>
+            <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.deviceName" /></td>
             <td>{{device.serialNumber}}</td>
             <td><span class="glyphicon" data-ng-class="{'glyphicon-ok': device.active, 'glyphicon-remove': !device.active}"></span></td>
           </tr>

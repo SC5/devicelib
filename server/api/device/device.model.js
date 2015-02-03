@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
 var DeviceSchema = new Schema({
   name: String,
+  label: String,
   loanedBy: String,
   info: String,
   active: Boolean,

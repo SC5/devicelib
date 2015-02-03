@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
 var LoanSchema = new Schema({
   deviceId: String,
+  deviceLabel: String,
   deviceName: String,
   userName: String,
   start: Date,

@@ -40,7 +40,7 @@ if (exists) {
       console.log("fake emit rfid data", data);
       emitter.emit('data', data);
     //}, 5000);
-  }, 3000);
+  }, 10000);
 
 }
 

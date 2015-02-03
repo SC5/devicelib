@@ -57,6 +57,7 @@ exports.destroy = function(req, res) {
 exports.loanStart = function(device) {
   var query = {
     deviceId: device._id,
+    deviceLabel: device.label,
     deviceName: device.name,
     userName: device.loanedBy,
     start: new Date()

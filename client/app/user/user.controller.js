@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('UserCtrl', function ($scope, socket, $http, $routeParams) {
+  .controller('UserCtrl', function ($scope, socket, $http, $routeParams, $window) {
     $scope.alerts = [];
     $scope.name = '';
     $scope.rfid = '';
@@ -16,7 +16,7 @@ angular.module('devicelibApp')
     }
 
     $scope.$back = function() {
-      window.history.back();
+      $window.history.back();
     };
 
     socket.syncUpdates('rfid', [], function(event, rfid) {

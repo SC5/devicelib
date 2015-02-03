@@ -4,10 +4,11 @@
       <h1>Device history</h1>
       <table class="table">
         <thead>
-        <tr><th>Device</th><th>Lender</th><th>started</th><th>ended</th></tr>
+        <tr><th>Device Label</th><th>Device Name</th><th>Lender</th><th>started</th><th>ended</th></tr>
         </thead>
         <tbody ng-repeat="loan in loans | orderBy:'start':0">
           <tr>
+            <td>{{loan.deviceLabel}}</td>
             <td>{{loan.deviceName}}</td>
             <td>{{loan.userName}}</td>
             <td>{{loan.start | date: 'dd.MM.yyyy HH:mm:ss'}}</td>
