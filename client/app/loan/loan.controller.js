@@ -1,16 +1,15 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('LoanCtrl', function ($scope, rfid, $http, socket, $location, $interval, $resource, $log, User) {
+  .controller('LoanCtrl', function ($scope, rfid, Device, socket, $location, $interval, $resource, $log, User) {
     if (Object.keys(rfid.user).length === 0) {
-      $log.debug('No user tag associated');;
+      $log.debug('No user tag associated');
       $location.path('/');
       return;
     }
-    $http.get('/api/devices').success(function(devices) {
-      $scope.devices = devices;
-      socket.syncUpdates('device', $scope.devices);
-    });
+    $scope.devices = Device.query();
+    socket.syncUpdates('device', $scope.devices);
+
     $scope.user = rfid.user || {};
     $scope.logoutInSecs = 12;
     var counter = $interval(function() {
