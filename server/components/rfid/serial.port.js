@@ -1,6 +1,6 @@
 'use strict';
 var crypto = require('crypto');
-var salt = "sc5Devic3S4lT"; // TODO change and move to config
+var salt = require('../../config/environment').salt;
 var fs = require('fs');
 var device = "/dev/ttySAC0";
 var SerialPort = require("serialport").SerialPort
@@ -9,8 +9,6 @@ var serialPortOptions = {
   baudrate: 9600,
   flowControl: false
 };
-
-
 
 var EventEmitter =  require('events').EventEmitter;
 
