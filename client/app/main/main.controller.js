@@ -2,7 +2,6 @@
 
 angular.module('devicelibApp')
   .controller('MainCtrl', function ($scope, $http, socket, $timeout, rfid, $location, $log, Device) {
-    $scope.devices = [];
     $scope.alerts = [];
     $scope.user = null;
     $scope.addAlert = function(type, msg) {
@@ -13,10 +12,9 @@ angular.module('devicelibApp')
       $scope.alerts.splice(index, 1);
     };
 
-    $http.get('/api/devices').success(function(devices) {
-      $scope.devices = devices;
-      socket.syncUpdates('device', $scope.devices);
-    });
+    $scope.devices = Device.query();
+    socket.syncUpdates('device', $scope.devices);
+
     socket.syncUpdates('message', [], function(event, item) {
       console.log("Message received", item);
       $scope.addAlert(item.type, item.title + ': ' + item.body);
