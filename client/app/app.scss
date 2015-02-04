@@ -15,6 +15,14 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
     padding: 0.2em 0;
 }
 
+input {
+  border-width: 0px;
+  outline: none;
+  &:hover, &:focus {
+    background-color: rgba(0, 0, 0, .1);
+  }
+}
+
 // Component styles are injected through grunt
 // injector
 @import 'history/history.scss';

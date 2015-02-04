@@ -15,7 +15,7 @@ var download = function(uri, filename, callback){
 };
 
 // Get Gravatar hash
-var grav_hash = function(req_body, callback) {
+var generate_gravatar = function(req_body, callback) {
   if(!req_body.gravatar_img) {
     req_body.gravatar_img = {
       data: '',
@@ -23,6 +23,7 @@ var grav_hash = function(req_body, callback) {
     };
   }
   if(req_body.email) {
+    console.log("email:" + req_body.email);
     var hash = crypt.createHash('md5').update(req_body.email).digest('hex');
     download('http://www.gravatar.com/avatar/' + hash, hash, function(){
       var img = fs.readFileSync(hash);
@@ -33,6 +34,8 @@ var grav_hash = function(req_body, callback) {
     });
   }
   else {
+    console.log("email:" + req_body.email);
+    console.log("test");
     download('http://www.gravatar.com/avatar/default', "gravatar.tmp", function(){
       var img = fs.readFileSync("gravatar.tmp");
       req_body.gravatar_img = "data:image/jpeg;base64," + img.toString('base64');
@@ -61,7 +64,7 @@ exports.show = function(req, res) {
 
 // Creates a new user in the DB.
 exports.create = function(req, res) {
-  grav_hash(req.body, function(resp) {
+  generate_gravatar(req.body, function(resp) {
     User.create(resp, function(err, user) {
       console.log(user);
       if(err) { return handleError(res, err); }
@@ -77,7 +80,8 @@ exports.update = function(req, res) {
   User.findById(req.params.id, function (err, user) {
     if (err) { return handleError(res, err); }
     if(!user) { return res.send(404); }
-    grav_hash(req.body, function(resp) {
+    console.log("user:" +user);
+    generate_gravatar(req.body, function(resp) {
       var updated = _.merge(user, resp);
       updated.save(function (err) {
         if (err) { return handleError(res, err); }

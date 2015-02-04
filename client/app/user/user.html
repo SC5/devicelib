@@ -4,19 +4,19 @@
       <h1 class="page-header">User</h1>
       <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
       <p><a href ng-click="$back()">Back</a></p>
-      <p id="gravatar_icon"><img ng-src="{{gravatar_img}}" /></p>
+      <p id="gravatar_icon"><img ng-src="{{user.gravatar_img}}" /></p>
       <form data-ng-submit="save()">
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" class="form-control" id="name" ng-model="name" placeholder="Enter name">
+          <input type="text" class="form-control" id="name" ng-model="user.name" placeholder="Enter name">
         </div>
         <div class="form-group">
           <label for="rfid-tag">RFID</label>
-          <p id="rfid-tag" ng-bind="rfid"></p>
+          <p id="rfid-tag" ng-bind="user.rfid"></p>
         </div>
         <div class="form-group">
           <label for="name">Email</label>
-          <input type="email" class="form-control" id="email" ng-model="email" placeholder="Enter email address">
+          <input type="email" class="form-control" id="email" ng-model="user.email" placeholder="Enter email address">
         </div>
         <button type="submit" class="btn btn-default">Save</button>
       </form>

@@ -6,7 +6,6 @@ var utils = require('./utils');
 
 emitter.findDevices = function(cb) {
   monitor.find(function(err, devices) {
-    console.log("devices", devices);
     var foundDevices = [];
     for (var i = 0; i < devices.length; ++i) {
       if (utils.isMobileDevice(devices[i])) {
@@ -25,7 +24,6 @@ monitor.on('add', function(device) {
 
 monitor.on('remove', function(device) {
   if (utils.isMobileDevice(device)) {
-    console.log("mobile device removed", device);
     emitter.emit('remove', createDeviceObject(device));
   }
 });

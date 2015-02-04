@@ -8,5 +8,6 @@ module.exports = {
     uri: 'mongodb://localhost/devicelib-dev'
   },
 
-  seedDB: true
+  seedDB: false,
+  salt: '000001'
 };

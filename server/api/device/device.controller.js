@@ -12,8 +12,6 @@ exports.index = function(req, res) {
       query[queryParams[i]] = req.params[queryParams[i]];
     }
   }
-  console.log("query", req.params);
-  console.log("finding with", query);
   Device.find(query, function (err, devices) {
     if(err) { return handleError(res, err); }
     return res.json(200, devices);

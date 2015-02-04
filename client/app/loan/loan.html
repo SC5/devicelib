@@ -7,10 +7,10 @@
         <thead>
         <tr><th>Label</th><th>Name</th><th>Serial number</th></tr>
         </thead>
-        <tbody ng-repeat="device in devices | filter:{active :true} | orderBy:'deviceName':0">
+        <tbody ng-repeat="device in devices | filter:{status :'available'} | orderBy:'name':0">
           <tr>
-            <td>{{device.deviceLabel}}</td>
-            <td>{{device.deviceName}}</td>
+            <td>{{device.label}}</td>
+            <td>{{device.name}}</td>
             <td>{{device.serialNumber}}</td>
           </tr>
         </tbody>
