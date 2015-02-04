@@ -1,7 +1,21 @@
 'use strict';
 
+var crypt = require('crypto');
 var _ = require('lodash');
 var User = require('./user.model');
+
+
+// Get Gravatar hash
+var grav_hash = function(req_body) {
+  if(req_body.email) {
+    var hash = crypt.createHash('md5').update(req_body.email).digest('hex');
+    req_body.gravatar_hash = hash;
+  }
+  else {
+    req_body.gravatar_hash = 'default';
+  }
+  return req_body;
+}
 
 // Get list of users
 exports.index = function(req, res) {
@@ -22,7 +36,7 @@ exports.show = function(req, res) {
 
 // Creates a new user in the DB.
 exports.create = function(req, res) {
-  User.create(req.body, function(err, user) {
+  User.create(grav_hash(req.body), function(err, user) {
     if(err) { return handleError(res, err); }
     return res.json(201, user);
   });
@@ -34,7 +48,7 @@ exports.update = function(req, res) {
   User.findById(req.params.id, function (err, user) {
     if (err) { return handleError(res, err); }
     if(!user) { return res.send(404); }
-    var updated = _.merge(user, req.body);
+    var updated = _.merge(user, grav_hash(req.body));
     updated.save(function (err) {
       if (err) { return handleError(res, err); }
       return res.json(200, user);

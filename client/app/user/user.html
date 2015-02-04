@@ -4,6 +4,7 @@
       <h1 class="page-header">User</h1>
       <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
       <p><a href ng-click="$back()">Back</a></p>
+      <p id="gravatar_icon"><img ng-src="http://www.gravatar.com/avatar/{{gravatar_hash}}" /></p>
       <form data-ng-submit="save()">
         <div class="form-group">
           <label for="name">Name</label>
