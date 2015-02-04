@@ -1,20 +1,20 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('UserCtrl', function ($scope, socket, $http, $routeParams, $window) {
+  .controller('UserCtrl', function ($scope, socket, $http, $routeParams, $window, User) {
     $scope.alerts = [];
     $scope.name = '';
     $scope.rfid = '';
     $scope.id = '';
     $scope.email = '';
-    $scope.gravatar_hash = '';
+    $scope.gravatar_img = '';
 
     if ($routeParams.id && $routeParams.id !== '') {
       $http.get('/api/users/' + $routeParams.id).success(function(user) {
         $scope.name = user.name;
         $scope.rfid = user.rfid;
         $scope.email = user.email;
-        $scope.gravatar_hash = user.gravatar_hash;
+        $scope.gravatar_img = user.gravatar_img;
         $scope.id = user._id;
       });
     }
@@ -35,12 +35,12 @@ angular.module('devicelibApp')
       var userData = {name: $scope.name, rfid: $scope.rfid, email: $scope.email};
       if ($scope.id) {
         $http.put('/api/users/' + $scope.id, userData).success(function(user) {
-          $scope.gravatar_hash = user.gravatar_hash;
+          $scope.gravatar_img = user.gravatar_img;
           $scope.addAlert('success', 'User saved');
        });
       } else {
         $http.post('/api/users', userData).success(function(user) {
-          $scope.gravatar_hash = user.gravatar_hash;
+          $scope.gravatar_img = user.gravatar_img;
           $scope.addAlert('success', 'User saved');
         });
       }

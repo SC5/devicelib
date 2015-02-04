@@ -17,6 +17,7 @@ angular.module('devicelibApp')
       $scope.devices = devices;
       socket.syncUpdates('device', $scope.devices);
     });
+
     socket.syncUpdates('message', [], function(event, item) {
       console.log("Message received", item);
       $scope.addAlert(item.type, item.title + ': ' + item.body);
