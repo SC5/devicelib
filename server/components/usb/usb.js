@@ -4,7 +4,6 @@ var messages = require('../../api/message/message.controller.js');
 var loanController = require('../../api/loan/loan.controller.js');
 
 var usbReader;
-// udev is linux only stuff
 
 if (process.platform === 'linux') {
   usbReader = require('./udev');
@@ -12,29 +11,27 @@ if (process.platform === 'linux') {
   usbReader = require('./usb.detection');
 }
 
-
+usbReader.findDevices(findDevicesHandler);
 function findDevicesHandler(devices) {
   for (var i = 0; i < devices.length; ++i) {
     var device = devices[i];
     var query = {serialNumber: device.serialNumber};
-    device.lastSeen = new Date();
-    device.active = true;
-    Device.findOneAndUpdate(query, device, {upsert: true}, function(err) {
+    Device.findOne(query, function(err, dev) {
       if (err) {
         console.log("Error in find devices", err);
       }
+      if (dev.loanedBy) {
+        loanController.loanEnd(dev);
+      }
+      dev.lastSeen = new Date();
+      dev.status = 'available'; // TODO const vars better define somewhere
+      dev.loanedBy = '';
+      dev.save();
     });
-
   }
   console.log(devices.length + " mobile devices detected");
 }
 
-Device.update({active: false}, function(err, d) {
-  if (d) {
-    console.log("deactivated " + d.length + " devices");
-  }
-  usbReader.findDevices(findDevicesHandler);
-});
 
 
 usbReader.on('add', function(device) {
@@ -43,7 +40,8 @@ usbReader.on('add', function(device) {
   console.log("querying", device);
   Device.findOne(query, function(err, doc) {
     if (doc === null) {
-      console.log("device not found, saving");
+      console.log("attached device not found, adding it to database");
+      device.status = 'available'; // TODO const vars better define somewhere
       Device.create(device, function (err) {
         if (err) {
           console.log("error saving doc", doc)
@@ -52,26 +50,29 @@ usbReader.on('add', function(device) {
     } else {
       console.log("device attached");
       loanController.loanEnd(doc);
-
       doc.loanedBy = null;
-      doc.active = true;
+      doc.status = 'available'; // TODO const vars better define somewhere
       updateDevice(doc);
     }
   })
 });
 
 usbReader.on('remove', function(device) {
-  console.log("USB DEATTACHED", device);
+  console.log("USB DISCONNECTED", device);
   var query = {serialNumber: device.serialNumber};
   Device.findOne(query, function(err, doc) {
-    doc.active = false;
-    console.log("device deattached")
+    if (doc === null) {
+      console.error('disconnected device was not found from DB');
+      return;
+    }
     setLoan(function(user) {
       if (user) {
         doc.loanedBy = user.name;
         loanController.loanStart(doc);
+        doc.status = 'borrowed'; // TODO const vars better define somewhere
       } else {
         messages.deviceRemovedWithoutTag();
+        doc.status = 'basket'; // TODO const vars better define somewhere
       }
       updateDevice(doc);
     });
