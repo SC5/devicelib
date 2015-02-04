@@ -7,6 +7,5 @@ module.exports.isMobileDevice = function(device) {
   } else {
     return false;
   }
-  console.log("mobile device", device);
   return /(iphone|android|sailfish|nokia|ipad)/i.test(deviceName);
 }

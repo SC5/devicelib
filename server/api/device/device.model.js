@@ -6,14 +6,13 @@ var mongoose = require('mongoose'),
 var DeviceSchema = new Schema({
   name: String,
   label: String,
+  status: String, /* 'available', 'basket', 'borrowed' */
   loanedBy: String,
   info: String,
-  active: Boolean,
   lastSeen: Date,
   locationId: String,
   vendorId: String,
   productId: String,
-  deviceName: String,
   manufacturer: String,
   serialNumber: String,
   deviceAddress: String
