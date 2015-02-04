@@ -7,7 +7,7 @@ var UserSchema = new Schema({
   name: String,
   email: String,
   rfid: String,
-  gravatar: { data: Buffer, contentType: String },
+  gravatar_hash: String,
   active: Boolean
 });
 
