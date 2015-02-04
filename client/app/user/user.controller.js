@@ -6,11 +6,13 @@ angular.module('devicelibApp')
     $scope.name = '';
     $scope.rfid = '';
     $scope.id = '';
+    $scope.email = '';
 
     if ($routeParams.id && $routeParams.id !== '') {
       $http.get('/api/users/' + $routeParams.id).success(function(user) {
         $scope.name = user.name;
         $scope.rfid = user.rfid;
+        $scope.email = user.email;
         $scope.id = user._id;
       })
     }
@@ -28,7 +30,7 @@ angular.module('devicelibApp')
     });
 
     $scope.save = function() {
-      var userData = {name: $scope.name, rfid: $scope.rfid};
+      var userData = {name: $scope.name, rfid: $scope.rfid, email: $scope.email};
       if ($scope.id) {
         $http.put('/api/users/' + $scope.id, userData).success(function(user) {
           $scope.addAlert('success', 'User saved');
