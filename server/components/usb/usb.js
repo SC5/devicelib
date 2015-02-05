@@ -16,20 +16,24 @@ function findDevicesHandler(devices) {
   for (var i = 0; i < devices.length; ++i) {
     var device = devices[i];
     var query = {serialNumber: device.serialNumber};
-    Device.findOne(query, function(err, dev) {
-      if (err) {
-        console.log("Error in find devices", err);
-      }
-      if (dev.loanedBy) {
-        loanController.loanEnd(dev);
-      }
-      dev.lastSeen = new Date();
-      dev.status = 'available'; // TODO const vars better define somewhere
-      dev.loanedBy = '';
-      dev.save();
-    });
+    updateDevice(query);
   }
   console.log(devices.length + " mobile devices detected");
+}
+
+function updateDevice(query) {
+  Device.findOne(query, function(err, dev) {
+    if (err) {
+      console.log("Error in find devices", err);
+    }
+    if (dev.loanedBy) {
+      loanController.loanEnd(dev);
+    }
+    dev.lastSeen = new Date();
+    dev.status = 'available'; // TODO const vars better define somewhere
+    dev.loanedBy = '';
+    dev.save();
+  });
 }
 
 

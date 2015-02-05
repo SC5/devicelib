@@ -16,7 +16,7 @@ angular.module('devicelibApp')
     socket.syncUpdates('device', $scope.devices);
 
     socket.syncUpdates('message', [], function(event, item) {
-      console.log("Message received", item);
+      $log.debug('Message received', item);
       $scope.addAlert(item.type, item.title + ': ' + item.body);
       $timeout(function() {
         $scope.closeAlert(0);
@@ -28,7 +28,7 @@ angular.module('devicelibApp')
         $scope.user = {name: user.name};
         $scope.showLoans = true;
         rfid.user = user;
-        $location.path( "/loan" );
+        $location.path('/loan');
       }
     });
 

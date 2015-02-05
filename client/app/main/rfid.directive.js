@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('devicelibApp').directive('rfidEvent', [
   '$document', '$log', 'socket',
   function($document, $log, socket) {
@@ -8,7 +10,7 @@ angular.module('devicelibApp').directive('rfidEvent', [
           if (e.target.nodeName.toLowerCase() !== 'input' && e.which === 114) {
             $log.debug('Triggering RFID event');
             socket.socket.emit('development:rfid');
-          };
+          }
         });
       }
     };
