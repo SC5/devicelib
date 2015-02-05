@@ -9,23 +9,13 @@ angular.module('devicelibApp').directive('screensaver', function($window, $locat
       if (screensaverTimeoutSeconds === 0) {
         return;
       }
-      $log.debug("init screen saver directive");
-      screensaverTimeoutPromise = $interval(showScreensaver, screensaverTimeoutSeconds*1000);
-      element.on('click', function() {
-        $scope.$apply(function() {
-          resetScreensaverCounter();
-        });
-      });
-      element.on('touchstart', function() {
-        $scope.$apply(function() {
-          resetScreensaverCounter();
-        });
-      });
+      $log.debug('init screen saver directive');
+
       function showScreensaver() {
-        $log.debug("enable screen saver");
+        $log.debug('enable screen saver');
         $interval.cancel(screensaverTimeoutPromise);
         var previousClass = $scope.screensaverClass;
-        var allClasses = ["left", "center", "right"];
+        var allClasses = ['left', 'center', 'right'];
         var classes = [];
         for (var i = 0; i < allClasses.length; i++) {
           if (previousClass !== allClasses[i]) {
@@ -42,6 +32,18 @@ angular.module('devicelibApp').directive('screensaver', function($window, $locat
         screensaverTimeoutPromise = $interval(showScreensaver, screensaverTimeoutSeconds*1000);
       }
 
+      screensaverTimeoutPromise = $interval(showScreensaver, screensaverTimeoutSeconds*1000);
+      element.on('click', function() {
+        $scope.$apply(function() {
+          resetScreensaverCounter();
+        });
+      });
+      element.on('touchstart', function() {
+        $scope.$apply(function() {
+          resetScreensaverCounter();
+        });
+      });
+
       function resetScreensaverCounter() {
         $interval.cancel(screensaverTimeoutPromise);
         if ($scope.screensaver) {
@@ -51,7 +53,7 @@ angular.module('devicelibApp').directive('screensaver', function($window, $locat
       }
 
       function hideScreensaver() {
-        $log.debug("disable screen saver");
+        $log.debug('disable screen saver');
         $scope.screensaver = false;
       }
       resetScreensaverCounter();

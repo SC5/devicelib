@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('devicelibApp').factory('Device', function($resource) {
   var resource = $resource(
     '/api/devices/:id',
