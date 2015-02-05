@@ -5,7 +5,7 @@ angular.module('devicelibApp').directive('rfidEvent', [
       restrict: 'A',
       link: function() {
         $document.bind('keypress', function(e) {
-          if (e.target.nodeName !== 'input' && e.which === 114) {
+          if (e.target.nodeName.toLowerCase() !== 'input' && e.which === 114) {
             $log.debug('Triggering RFID event');
             socket.socket.emit('development:rfid');
           };
