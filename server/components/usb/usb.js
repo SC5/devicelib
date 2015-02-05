@@ -16,12 +16,12 @@ function findDevicesHandler(devices) {
   for (var i = 0; i < devices.length; ++i) {
     var device = devices[i];
     var query = {serialNumber: device.serialNumber};
-    updateDevice(query);
+    updateFoundDevice(query);
   }
   console.log(devices.length + " mobile devices detected");
 }
 
-function updateDevice(query) {
+function updateFoundDevice(query) {
   Device.findOne(query, function(err, dev) {
     if (err) {
       console.log("Error in find devices", err);
