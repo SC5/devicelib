@@ -7,7 +7,6 @@ angular.module('devicelibApp')
 	$scope.users = User.query();
 
 	$scope.removeUser = function(user) {
-    console.log(user);
 		User.remove({id: user._id});
     $scope.users = User.query();
 		$scope.addAlert('success', 'User deleted');

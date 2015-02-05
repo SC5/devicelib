@@ -16,7 +16,6 @@ var download = function(uri, filename, callback){
 
 // Get Gravatar hash
 var generate_gravatar = function(req_body, callback) {
-  console.log("req_body email: " + req_body.email);
   if(!req_body.gravatar_img) {
     req_body.gravatar_img = {
       data: '',
@@ -24,7 +23,6 @@ var generate_gravatar = function(req_body, callback) {
     };
   }
   if(req_body.email) {
-    console.log("email:" + req_body.email);
     var hash = crypt.createHash('md5').update(req_body.email).digest('hex');
     download('http://www.gravatar.com/avatar/' + hash, hash, function(){
       var img = fs.readFileSync(hash);
