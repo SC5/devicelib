@@ -2,6 +2,7 @@
   <div class="row">
     <div class="col-lg-12">
       <h1 class="page-header">Users</h1>
+      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
       <p><a ng-href="/user">Add new user</a></p>
       <table class="table">
         <thead>
@@ -9,7 +10,7 @@
         </thead>
         <tbody ng-repeat="user in users | orderBy:'name':0">
           <tr>
-            <td><a ng-href="/user/{{user._id}}">{{user.name}}</a></td>
+            <td><a ng-href="/user/{{user._id}}">{{user.name}}</a><a class="remove-user-link" ng-click="removeUser(user)"><span class="glyphicon glyphicon-remove"></span></a></td>
           </tr>
         </tbody>
       </table>

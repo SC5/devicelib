@@ -23,7 +23,6 @@ var generate_gravatar = function(req_body, callback) {
     };
   }
   if(req_body.email) {
-    console.log("email:" + req_body.email);
     var hash = crypt.createHash('md5').update(req_body.email).digest('hex');
     download('http://www.gravatar.com/avatar/' + hash, hash, function(){
       var img = fs.readFileSync(hash);
@@ -34,8 +33,6 @@ var generate_gravatar = function(req_body, callback) {
     });
   }
   else {
-    console.log("email:" + req_body.email);
-    console.log("test");
     download('http://www.gravatar.com/avatar/default', "gravatar.tmp", function(){
       var img = fs.readFileSync("gravatar.tmp");
       req_body.gravatar_img = "data:image/jpeg;base64," + img.toString('base64');
