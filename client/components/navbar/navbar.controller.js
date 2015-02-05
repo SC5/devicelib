@@ -11,6 +11,9 @@ angular.module('devicelibApp')
     }, {
       'title': 'Users',
       'link': '/users'
+    }, {
+      'title': 'Devices',
+      'link': '/devices'
     }];
 
     $scope.isCollapsed = true;

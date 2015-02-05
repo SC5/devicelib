@@ -25,6 +25,7 @@ input {
 
 // Component styles are injected through grunt
 // injector
+@import 'devices/devices.scss';
 @import 'history/history.scss';
 @import 'loan/loan.scss';
 @import 'main/main.scss';
