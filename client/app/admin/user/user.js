@@ -3,12 +3,12 @@
 angular.module('devicelibApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/user/:id', {
-        templateUrl: 'app/user/user.html',
+      .when('/admin/user/:id', {
+        templateUrl: 'app/admin/user/user.html',
         controller: 'UserCtrl'
       })
-      .when('/user/', {
-        templateUrl: 'app/user/user.html',
+      .when('/admin/user/', {
+        templateUrl: 'app/admin/user/user.html',
         controller: 'UserCtrl'
       });
   });
