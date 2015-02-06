@@ -27,7 +27,6 @@ var generate_gravatar = function(req_body, callback) {
     download('http://www.gravatar.com/avatar/' + hash, hash, function(){
       var img = fs.readFileSync(hash);
       req_body.gravatar_img = "data:image/jpeg;base64," + img.toString('base64');
-      console.log(img.toString('base64'));
       fs.unlinkSync(hash);
       callback(req_body);
     });
@@ -63,7 +62,6 @@ exports.show = function(req, res) {
 exports.create = function(req, res) {
   generate_gravatar(req.body, function(resp) {
     User.create(resp, function(err, user) {
-      console.log(user);
       if(err) { return handleError(res, err); }
       return res.json(201, user);
     })
@@ -77,7 +75,6 @@ exports.update = function(req, res) {
   User.findById(req.params.id, function (err, user) {
     if (err) { return handleError(res, err); }
     if(!user) { return res.send(404); }
-    console.log("user:" +user);
     generate_gravatar(req.body, function(resp) {
       var updated = _.merge(user, resp);
       updated.save(function (err) {
