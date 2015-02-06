@@ -1,44 +1,54 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('UserCtrl', function ($scope, socket, $routeParams, $window, User) {
-    $scope.alerts = [];
+.controller('UserCtrl', function ($scope, socket, $routeParams, $window, User) {
+  $scope.alerts = [];
 
-    if ($routeParams.id && $routeParams.id !== '') {
-      $scope.user = User.get({id:$routeParams.id});
-    } else {
-      $scope.user = new User();
-    }
+  if ($routeParams.id && $routeParams.id !== '') {
+    $scope.user = User.get({id:$routeParams.id});
+  } else {
+    $scope.user = new User();
+  }
 
-    $scope.$back = function() {
-      $window.history.back();
-    };
+  $scope.$back = function() {
+    $window.history.back();
+  };
 
-    socket.syncUpdates('rfid', [], function(event, rfid) {
-      $scope.user.rfid = rfid;
-    });
+  socket.syncUpdates('rfid', [], function(event, rfid) {
+    $scope.user.rfid = rfid;
+  });
 
-    $scope.$on('$destroy', function () {
-      socket.unsyncUpdates('rfid');
-    });
+  $scope.$on('$destroy', function () {
+    socket.unsyncUpdates('rfid');
+  });
 
-    $scope.save = function() {
+  $scope.save = function(form) {
+    console.log(form.$valid);
+    if(form.$valid) {
       if ($scope.user._id) {
         $scope.user.$update(function() {
-          $scope.addAlert('success', 'User saved');
-       });
+          $scope.addAlert('success', 'User details updated.');
+        });
       } else {
         $scope.user.$save(function() {
-          $scope.addAlert('success', 'New user created');
+          $scope.addAlert('success', 'New user created.');
         });
       }
-    };
+    }
+    else {
+      $scope.alerts = [];
+      if(!form.name.$valid)
+        { $scope.addAlert('danger', 'Please enter your name.'); }
+      if(!form.email.$valid)
+        { $scope.addAlert('danger', 'Please enter a valid email address.'); }
+    }
+  };
 
-    $scope.addAlert = function(type, msg) {
-      $scope.alerts.push({type: type, msg: msg});
-    };
+  $scope.addAlert = function(type, msg) {
+    $scope.alerts.push({type: type, msg: msg});
+  };
 
-    $scope.closeAlert = function(index) {
-      $scope.alerts.splice(index, 1);
-    };
-  });
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
+});
