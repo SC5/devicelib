@@ -4,7 +4,7 @@ angular.module('devicelibApp')
   .config(function ($routeProvider) {
     $routeProvider
       .when('/admin/history', {
-        templateUrl: 'app/history/history.html',
+        templateUrl: 'app/admin/history/history.html',
         controller: 'HistoryCtrl'
       });
   });
