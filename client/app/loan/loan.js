@@ -3,8 +3,8 @@
 angular.module('devicelibApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('admin/loan', {
-        templateUrl: 'app/admin/loan/loan.html',
+      .when('/loan', {
+        templateUrl: 'app/loan/loan.html',
         controller: 'LoanCtrl'
       });
   });

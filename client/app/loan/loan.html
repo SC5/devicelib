@@ -2,12 +2,14 @@
   <div class="row">
     <div class="col-md-12">
       <h1>Hi {{user.name}}</h1>
-      <h2>Available device list</h2>
+      <h2>There are {{devices|available}} device(s) available</h2>
+      <h3>Remove the device you want to loan from the USB connector</h3>
+      <h4>When done, press the button below</h4>
       <table class="table">
         <thead>
         <tr><th>Label</th><th>Name</th><th>Serial number</th></tr>
         </thead>
-        <tbody ng-repeat="device in devices | filter:{status :'available'} | orderBy:'name':0">
+        <tbody ng-repeat="device in devices | filter:{loanedBy :user.name} | orderBy:'name':0">
           <tr>
             <td>{{device.label}}</td>
             <td>{{device.name}}</td>
@@ -15,7 +17,7 @@
           </tr>
         </tbody>
       </table>
-      <p class="small">{{ logoutInSecs }} secs until logged out</p>
+      <button ng-click="done()" type="button" class="btn btn-primary btn-lg btn-block">okay, done</button>
     </div>
   </div>
 </div>

@@ -36,10 +36,10 @@ angular.module('devicelibApp')
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('device');
       socket.unsyncUpdates('message');
+      socket.unsyncUpdates('user');
     });
 
     $scope.clientFieldChanged = function(model) {
-      $log.debug(model);
       var device = Device.get({id:model._id}, function() {
         device = angular.extend(device, model);
         device.$update();
