@@ -3,7 +3,7 @@
 angular.module('devicelibApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/devices', {
+      .when('/admin/devices', {
         templateUrl: 'app/devices/devices.html',
         controller: 'DevicesCtrl'
       });

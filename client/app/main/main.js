@@ -6,5 +6,8 @@ angular.module('devicelibApp')
       .when('/', {
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
+      }).when('/admin', {
+        templateUrl: 'app/main/main.html',
+        controller: 'MainCtrl'
       });
   });

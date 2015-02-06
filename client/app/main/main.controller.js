@@ -2,6 +2,7 @@
 
 angular.module('devicelibApp')
   .controller('MainCtrl', function ($scope, $http, socket, $timeout, rfid, $location, $log, Device) {
+    
     $scope.alerts = [];
     $scope.user = null;
     $scope.addAlert = function(type, msg) {
