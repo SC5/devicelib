@@ -3,7 +3,7 @@
 angular.module('devicelibApp')
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/history', {
+      .when('/admin/history', {
         templateUrl: 'app/history/history.html',
         controller: 'HistoryCtrl'
       });
