@@ -46,6 +46,9 @@ module.exports = function (socketio, serialPort) {
 
   // RFID serial handler
   serialPort.on('data', function(data) {
+    // broadcast to all
+    socketio.sockets.emit('rfid:save', data);
+
     var query  = User.where({rfid: data});
     query.findOne(function(err, user) {
       if (err) {
