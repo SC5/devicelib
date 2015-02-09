@@ -5,7 +5,24 @@
 <div class="modal-body">
   <p ng-if="modal.text" ng-bind="modal.text"></p>
   <div ng-if="modal.html" ng-bind-html="modal.html"></div>
-</div>
-<div class="modal-footer">
-  <button ng-repeat="button in modal.buttons" ng-class="button.classes" ng-click="button.click($event)" ng-bind="button.text" class="btn"></button>
+  <form name="form">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" ng-model="modal.name" name="name" placeholder="Enter name" required>
+    </div>
+    <div class="form-group">
+      <label for="name">Email</label>
+      <input type="text" class="form-control" ng-model="modal.email" name="email" placeholder="Enter email address">
+    </div>
+    <div class="form-group">
+      <label for="rfid-tag">RFID</label>
+      <p id="rfid-tag" ng-if="modal.rfid" ng-bind="modal.rfid"></p>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+<!-- <button type="submit" class="btn btn-default">Save</button>
+-->
+<button ng-class="modal.button.classes" ng-click="modal.button.click(modal.name, modal.email)" ng-bind="modal.button.text" class="btn"></button>
+</form>
 </div>
