@@ -10,6 +10,12 @@ angular.module('devicelibApp')
     $scope.user = rfid.user || {};
     $scope.devices = Device.query();
     socket.syncUpdates('device', $scope.devices);
+    socket.syncUpdates('user', [], function(e, user) {
+      if (user._id === rfid.user._id && user.active === false) {
+        rfid.user = {};
+        $location.path('/'); // TODO redirect to logout view
+      }
+    });
 
     $scope.done = function() {
       var user = new User(rfid.user);
@@ -20,9 +26,17 @@ angular.module('devicelibApp')
       });
     }
 
+    $scope.$on('$destroy', function () {
+      socket.unsyncUpdates('device');
+      socket.unsyncUpdates('user');
+    });
+
 
   }).filter('available', function() {
     return function(devices) {
+      if (!!devices === false) {
+        return 0;
+      }
       function f(d) {
         return d.status === 'available';
       }
