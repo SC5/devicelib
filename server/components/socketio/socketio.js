@@ -52,9 +52,14 @@ module.exports = function (socketio, serialPort) {
         console.log("error occurred while querying by rfid");
       }
       if (user) {
-        console.log("Found user", user);
         messageController.registered(user);
-        user.active = true;
+        if (user.active) { // user logged in, log out
+          console.info('log out user', user.name);
+          user.active = false;
+        } else {
+          console.info('log in user', user.name);
+          user.active = true;
+        }
         user.save();
       } else {
         messageController.unregistered();
