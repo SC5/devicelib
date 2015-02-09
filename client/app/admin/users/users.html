@@ -10,7 +10,7 @@
         </thead>
         <tbody ng-repeat="user in users | orderBy:'name':0">
           <tr>
-            <td><a ng-href="admin/user/{{user._id}}"><img class="gravatar-icon-small" src="{{user.gravatar_img}}">{{user.name}}</a><a class="remove-user-link" ng-click="removeUser(user)"><span class="glyphicon glyphicon-remove"></span></a></td>
+            <td><a ng-href="admin/user/{{user._id}}"><img class="gravatar-icon-small" src="{{user.gravatar_img}}">{{user.name}}</a><a class="remove-user-link" ng-click="removeUser(user)"><span class="glyphicon glyphicon-trash"></span></a></td>
           </tr>
         </tbody>
       </table>
