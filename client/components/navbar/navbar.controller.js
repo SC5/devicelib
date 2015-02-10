@@ -3,7 +3,6 @@
 angular.module('devicelibApp')
   .controller('NavbarCtrl', function ($scope, $location) {
     $scope.isAdmin = $location.path().indexOf('/admin') === 0;
-    console.log($scope.isAdmin);
     $scope.menu = [{
       'title': 'Home',
       'link': '/admin'
