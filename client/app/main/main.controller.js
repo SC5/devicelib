@@ -23,6 +23,7 @@ angular.module('devicelibApp')
         user.name = res.name;
         user.email = res.email;
         user.nonregistered = false;
+        user.active = true;
         User.update(user);
       });
       $scope.displayModal();
