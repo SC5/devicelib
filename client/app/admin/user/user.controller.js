@@ -23,7 +23,6 @@ angular.module('devicelibApp')
   });
 
   $scope.save = function(form) {
-    console.log(form.$valid);
     if(form.$valid) {
       if ($scope.user._id) {
         $scope.user.$update(function() {
