@@ -2,11 +2,11 @@
  * Socket.io configuration
  */
 
-'use strict';
+ 'use strict';
 
-var config = require('./../../config/environment/index');
-var messageController = require('../../api/message/message.controller.js');
-var User = require('../../api/user/user.model.js');
+ var config = require('./../../config/environment/index');
+ var messageController = require('../../api/message/message.controller.js');
+ var User = require('../../api/user/user.model.js');
 
 // When the user disconnects.. perform this
 function onDisconnect(socket) {
@@ -56,6 +56,10 @@ module.exports = function (socketio, serialPort) {
       }
       if (user) {
         messageController.registered(user);
+        if(user.nonregistered) {
+          user.remove();
+          return;
+        }
         if (user.active) { // user logged in, log out
           console.info('log out user', user.name);
           user.active = false;
@@ -64,16 +68,19 @@ module.exports = function (socketio, serialPort) {
           user.active = true;
         }
         user.save();
-      } else {
-        messageController.unregistered();
       }
-    });
+      else {
+        User.create({name:'', rfid: data, nonregistered: true}, function(err, usr) {
+        });
+      }
+    }
+    );
   });
 
   socketio.on('connection', function (socket) {
     socket.address = socket.handshake.address !== null ?
-            socket.handshake.address.address + ':' + socket.handshake.address.port :
-            process.env.DOMAIN;
+    socket.handshake.address.address + ':' + socket.handshake.address.port :
+    process.env.DOMAIN;
 
     socket.connectedAt = new Date();
 
