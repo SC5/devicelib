@@ -8,7 +8,8 @@ var UserSchema = new Schema({
   email: String,
   rfid: String,
   gravatar_img: String,
-  active: Boolean
+  active: Boolean,
+  nonregistered: Boolean,
 });
 
 module.exports = mongoose.model('User', UserSchema);

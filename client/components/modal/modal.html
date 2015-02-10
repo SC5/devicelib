@@ -12,17 +12,12 @@
     </div>
     <div class="form-group">
       <label for="name">Email</label>
-      <input type="text" class="form-control" ng-model="modal.email" name="email" placeholder="Enter email address">
+      <input type="email" class="form-control" ng-model="modal.email" name="email" placeholder="Enter email address" required>
     </div>
-    <div class="form-group">
-      <label for="rfid-tag">RFID</label>
-      <p id="rfid-tag" ng-if="modal.rfid" ng-bind="modal.rfid"></p>
-    </div>
-
   </div>
   <div class="modal-footer">
-<!-- <button type="submit" class="btn btn-default">Save</button>
--->
-<button ng-class="modal.button.classes" ng-click="modal.button.click(modal.name, modal.email)" ng-bind="modal.button.text" class="btn"></button>
-</form>
+    <div ng-show="form.$valid">
+      <button ng-class="modal.button.classes" ng-click="modal.button.click(modal.name, modal.email)" ng-bind="modal.button.text" class="btn"></button>
+    </div>
+  </form>
 </div>

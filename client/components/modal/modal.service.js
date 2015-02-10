@@ -42,7 +42,6 @@ angular.module('devicelibApp')
            * @param  {All}           - any additional args are passed staight to callback callback
            */
            return function() {
-
             var newUserModal;
             var user = {
               email: '',
@@ -52,7 +51,6 @@ angular.module('devicelibApp')
             newUserModal = openModal({
               modal: {
                 dismissable: true,
-                rfid: 'randomRFIDString',
                 title: 'Create new user',
                 button: {
                   text: 'Save',
