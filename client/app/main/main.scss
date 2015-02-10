@@ -54,6 +54,15 @@ td {
   }
 }
 
+.remove-user-link {
+  cursor: pointer;
+  float: right;
+}
+
+.glyphicon-trash .glyphicon-remove .glyphicon-ok {
+  vertical-align: middle;
+}
+
 .footer {
     text-align: center;
     padding: 30px 0;

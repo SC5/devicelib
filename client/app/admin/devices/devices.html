@@ -4,7 +4,7 @@
       <h1 class="page-header">Devices</h1>
       <table class="table">
         <thead>
-        <tr><th>Label</th><th>Name</th><th>Serial number</th><th></th></tr>
+        <tr><th>Label</th><th>Name</th><th>Serial number</th><th></th><th></th></tr>
         </thead>
         <tbody ng-repeat="device in devices | orderBy:'name':0">
           <tr>
@@ -12,10 +12,14 @@
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.name" /></td>
             <td>{{device.serialNumber}}</td>
             <td>
-              <a
-                class="remove-user-link"
-                ng-click="removeDevice(device)"
+            <td>
+              <span class="glyphicon connected"
+                ng-class="device.status === 'available' ? 'glyphicon-ok' : 'glyphicon-remove'"
               >
+              </span>
+            </td>
+            <td>
+              <a class="remove-user-link" ng-click="removeDevice(device)">
                 <span class="glyphicon glyphicon-trash" title="Remove device"></span>
               </a>
             </td>
