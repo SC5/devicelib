@@ -46,7 +46,8 @@ usbReader.on('add', function(device) {
     if (doc === null) {
       console.log("attached device not found, adding it to database");
       device.status = 'available'; // TODO const vars better define somewhere
-      Device.create(device, function (err) {
+      var deviceModel = new Device(device);
+      deviceModel.save(device, function (err) {
         if (err) {
           console.log("error saving doc", doc)
         }
