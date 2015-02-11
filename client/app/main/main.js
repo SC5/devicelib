@@ -7,7 +7,8 @@ angular.module('devicelibApp')
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
       }).when('/admin', {
-        templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        redirectTo: function() {
+          return '/admin/devices';
+        }
       });
   });
