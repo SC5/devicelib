@@ -8,12 +8,20 @@ angular.module('devicelibApp')
      * @param  {String} modalClass - (optional) class(es) to be applied to the modal
      * @return {Object}            - the instance $modal.open() returns
      */
-     function openModal(scope, modalClass) {
+     function openModal(scope, modalClass, type) {
       var modalScope = $rootScope.$new();
       scope = scope || {};
       modalClass = modalClass || 'modal-default';
 
       angular.extend(modalScope, scope);
+
+      if (type === 'device') {
+        return $modal.open({
+          templateUrl: 'components/modal/modal.device.html',
+          windowClass: modalClass,
+          scope: modalScope
+        });
+      }
 
       return $modal.open({
         templateUrl: 'components/modal/modal.html',
@@ -67,6 +75,28 @@ angular.module('devicelibApp')
               callback.apply(event, [user]);
             });
           };
+        },
+        newDevice: function(device, cb) {
+          cb = cb || angular.noop;
+
+          return function() {
+            var modal;
+            modal = openModal({
+              modal: {
+                dismissable: true,
+                title: 'New device detected',
+                name: device.name,
+                label: device.label,
+                button: {
+                  text: 'Save',
+                  click: function(data) {
+                    modal.close(data);
+                  }
+                }
+              }
+            }, 'modal-danger', 'device');
+            modal.result.then(cb);
+          }
         }
       }
     };
