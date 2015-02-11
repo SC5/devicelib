@@ -12,18 +12,12 @@ angular.module('devicelibApp')
     socket.syncUpdates('device', $scope.devices);
     socket.syncUpdates('user', [], function(e, user) {
       if (user._id === rfid.user._id && user.active === false) {
-        rfid.user = {};
-        $location.path('/'); // TODO redirect to logout view
+        $location.path('/logout');
       }
     });
 
     $scope.done = function() {
-      var user = new User(rfid.user);
-      user.active = false;
-      user.$update(function() {
-        rfid.user = {};
-        $location.path('/');
-      });
+      $location.path('/logout');
     }
 
     $scope.$on('$destroy', function () {
