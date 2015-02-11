@@ -2,7 +2,7 @@
 
 angular.module('devicelibApp')
   .controller('NavbarCtrl', function ($scope, $location) {
-    $scope.isAdmin = $location.path().indexOf('/admin') === 0;
+    $scope.isAdmin = isAdmin();
     $scope.menu = [{
       'title': 'Home',
       'link': '/admin'
@@ -21,5 +21,13 @@ angular.module('devicelibApp')
 
     $scope.isActive = function(route) {
       return route === $location.path();
+    };
+
+    $scope.$on('$locationChangeSuccess', function() {
+      $scope.isAdmin = isAdmin();
+    });
+
+    function isAdmin() {
+      return $location.path().indexOf('/admin') === 0;
     };
   });
