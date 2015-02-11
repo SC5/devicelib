@@ -110,11 +110,15 @@ exports.loanStart = function(device) {
 
 exports.loanEnd = function(device) {
   console.log("ending loan", device);
-  Loan.findOneAndUpdate({deviceId: device._id, end: null}, {end: new Date()}, function(err, doc){
+  Loan.findOne({deviceId: device._id, end: null}, function(err, doc){
     if (err) {
       console.log("something wrong with loanEnd", err);
     }
-    console.log("ended loan", doc)
+    if (doc) {
+      doc.end = new Date();
+      doc.save();
+    }
+    console.log("ended loan", doc);
   });
 }
 function handleError(res, err) {

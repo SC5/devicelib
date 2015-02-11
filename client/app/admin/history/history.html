@@ -1,11 +1,11 @@
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-      <h1 class="page-header">Device history</h1>
+      <h1 class="page-header">Loan History</h1>
       <div class="loading" ng-show="loading">Loading...</div>
       <table ng-hide="loading" class="table">
         <thead>
-        <tr><th>Device Label</th><th>Device Name</th><th>Lender</th><th>started</th><th>ended</th></tr>
+        <tr><th>Device Label</th><th>Device Name</th><th>Lender</th><th>Start Time</th><th>End Time</th></tr>
         </thead>
         <tbody ng-repeat="loan in loans">
           <tr>

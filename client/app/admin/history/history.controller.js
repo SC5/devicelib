@@ -12,13 +12,19 @@ angular.module('devicelibApp')
       params: {skip: 0, limit: defaultLimitPerPage, sortField: $scope.sort.field, sortType: $scope.sort.type },
       method: 'GET'
     })
-      .success(function(data) {
-        setLoading(false);
-        $scope.totalItems = data.meta.totalItems
-        $scope.loans = data.results;
-      });
+    .success(function(data) {
+      setLoading(false);
+      $scope.totalItems = data.meta.totalItems;
+      $scope.loans = data.results;
+    });
 
-    socket.syncUpdates('loan', $scope.loans);
+    socket.syncUpdates('loan', [], function(event, item) {
+      $scope.loans.forEach(function(loan, iter) {
+        if (loan._id === item._id) {
+          $scope.loans[iter] = item;
+        }
+      });
+    });
 
     $scope.currentPage = 1;
     $scope.itemsPerPage = defaultLimitPerPage;
