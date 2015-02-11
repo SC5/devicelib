@@ -1,20 +1,17 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('NavbarCtrl', function ($scope, $location) {
-    $scope.isAdmin = isAdmin();
+  .controller('NavbarCtrl', function ($scope, $location, Util) {
+    $scope.isAdmin = Util.isAdmin($location);
     $scope.menu = [{
-      'title': 'Home',
-      'link': '/admin'
-    }, {
-      'title': 'History',
-      'link': '/admin/history'
+      'title': 'Devices',
+      'link': '/admin/devices'
     }, {
       'title': 'Users',
       'link': '/admin/users'
     }, {
-      'title': 'Devices',
-      'link': '/admin/devices'
+      'title': 'History',
+      'link': '/admin/history'
     }];
 
     $scope.isCollapsed = true;
@@ -24,10 +21,6 @@ angular.module('devicelibApp')
     };
 
     $scope.$on('$locationChangeSuccess', function() {
-      $scope.isAdmin = isAdmin();
+      $scope.isAdmin = Util.isAdmin($location);
     });
-
-    function isAdmin() {
-      return $location.path().indexOf('/admin') === 0;
-    };
   });
