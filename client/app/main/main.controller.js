@@ -12,7 +12,11 @@ angular.module('devicelibApp')
   $scope.closeAlert = function(index) {
     $scope.alerts.splice(index, 1);
   };
-
+  rfid.getLoggedInUser().then(function(user) {
+    if (user._id) {
+      $location.path('/loan');
+    }
+  });
 
   $scope.devices = Device.query();
   socket.syncUpdates('device', $scope.devices, function(event, device) {

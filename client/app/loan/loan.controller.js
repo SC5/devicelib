@@ -1,18 +1,22 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('LoanCtrl', function ($scope, rfid, Device, socket, $location, $interval, $resource, $log, User) {
-    if (Object.keys(rfid.user).length === 0) {
-      $log.debug('No user tag associated');
-      $location.path('/');
-      return;
-    }
-    $scope.user = rfid.user || {};
+  .controller('LoanCtrl', function ($scope, rfid, Device, socket, $location, $interval, $resource, $log) {
+    rfid.getLoggedInUser().then(function(user) {
+      if (Object.keys(user).length === 0) {
+        $log.debug('No user tag associated');
+        $location.path('/');
+        return;
+      } else {
+        $scope.user = user;
+      }
+    });
+
     $scope.devices = Device.query();
     socket.syncUpdates('device', $scope.devices);
     socket.syncUpdates('user', [], function(e, user) {
-      if (user._id === rfid.user._id && user.active === false) {
-        $location.path('/logout');
+      if (user._id === $scope.user._id && user.active === false) {
+        rfid.logout().then($scope.done);
       }
     });
 
@@ -24,7 +28,6 @@ angular.module('devicelibApp')
       socket.unsyncUpdates('device');
       socket.unsyncUpdates('user');
     });
-
 
   }).filter('available', function() {
     return function(devices) {

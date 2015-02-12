@@ -1,9 +1,25 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .service('rfid', ['$q', 'User', function ($q, User) {
+  .service('rfid', ['$q', 'User', '$log', function ($q, User, $log) {
     return {
       user: {},
+      getLoggedInUser: function() {
+        var that = this;
+        var defer = $q.defer();
+        this.user = {};
+        var users = User.query(function() {
+          for(var i = 0; i < users.length; ++i) {
+            if (users[i].active) {
+              $log.debug('user ' + users[i].name + ' active');
+              that.user = users[i];
+              break;
+            }
+          }
+          defer.resolve(that.user);
+        });
+        return defer.promise;
+      },
       logout: function() {
         var defer = $q.defer();
         var that = this;
