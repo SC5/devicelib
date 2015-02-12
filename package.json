@@ -16,6 +16,7 @@
     "method-override": "~1.0.0",
     "mongoose": "~3.8.8",
     "morgan": "~1.0.0",
+    "player": "^0.3.2",
     "q": "^1.1.2",
     "request": "^2.53.0",
     "serialport": "^1.4.10",
