@@ -16,7 +16,7 @@ angular.module('devicelibApp')
     socket.syncUpdates('device', $scope.devices);
     socket.syncUpdates('user', [], function(e, user) {
       if (user._id === $scope.user._id && user.active === false) {
-        rfid.logout().then($scope.done);
+        $scope.done()
       }
     });
 
