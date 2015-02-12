@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('devicelibApp').directive('screensaver', function($window, $location, $interval, $log, socket) {
+angular.module('devicelibApp').directive('screensaver', function($window, $location, $interval, $log) {
   var screensaverTimeoutPromise;
   var screensaverTimeoutSeconds = 2;
   return {
@@ -33,25 +33,19 @@ angular.module('devicelibApp').directive('screensaver', function($window, $locat
       }
 
       screensaverTimeoutPromise = $interval(showScreensaver, screensaverTimeoutSeconds*1000);
-      element.on('click', function() {
+      angular.element('body').on('click', function() {
         $scope.$apply(function() {
           resetScreensaverCounter();
         });
       });
-      element.on('touchstart', function() {
+      angular.element('body').on('touchstart', function() {
         $scope.$apply(function() {
           resetScreensaverCounter();
         });
       });
-      socket.socket.on('user:save', function() {
-        $scope.$apply(function() {
-          resetScreensaverCounter();
-        });
-      });
-      socket.socket.on('device:save', function() {
-        $scope.$apply(function() {
-          resetScreensaverCounter();
-        });
+
+      $scope.$on('screensaver', function() {
+        resetScreensaverCounter();
       });
 
       function resetScreensaverCounter() {
