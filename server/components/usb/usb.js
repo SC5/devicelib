@@ -2,6 +2,7 @@ var Device = require('./../../api/device/device.model.js');
 var User = require('../../api/user/user.model.js');
 var messages = require('../../api/message/message.controller.js');
 var loanController = require('../../api/loan/loan.controller.js');
+var sound = require('../player');
 
 var usbReader;
 
@@ -45,6 +46,7 @@ usbReader.on('add', function(device) {
   Device.findOne(query, function(err, doc) {
     if (doc === null) {
       console.log("attached device not found, adding it to database");
+      sound.deviceAttachedUnknown();
       device.status = 'available'; // TODO const vars better define somewhere
       var deviceModel = new Device(device);
       deviceModel.save(device, function (err) {
@@ -54,6 +56,7 @@ usbReader.on('add', function(device) {
       });
     } else {
       console.log("device attached");
+      sound.deviceAttachedKnown();
       loanController.loanEnd(doc);
       doc.loanedBy = null;
       doc.status = 'available'; // TODO const vars better define somewhere
@@ -74,8 +77,10 @@ usbReader.on('remove', function(device) {
       if (user) {
         doc.loanedBy = user.name;
         loanController.loanStart(doc);
+        sound.deviceDeattachedWithTag();
         doc.status = 'borrowed'; // TODO const vars better define somewhere
       } else {
+        sound.deviceDeattachedWithoutTag();
         messages.deviceRemovedWithoutTag();
         doc.status = 'basket'; // TODO const vars better define somewhere
       }
