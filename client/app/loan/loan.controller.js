@@ -18,7 +18,7 @@ angular.module('devicelibApp')
 
     $scope.done = function() {
       $location.path('/logout');
-    }
+    };
 
     $scope.$on('$destroy', function () {
       socket.unsyncUpdates('device');

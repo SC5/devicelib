@@ -1,5 +1,9 @@
 <footer class="footer" ng-controller="FooterCtrl">
   <div class="container">
+    <p ng-class="user.active ? 'user' : 'none'">
+      <span class="glyphicon glyphicon-user"></span>
+      {{ user.name }}
+    </p>
     <p>
       &copy; 2015 SC5 Online - Device library&nbsp;
       <a href="/admin" ng-if="isApp">
