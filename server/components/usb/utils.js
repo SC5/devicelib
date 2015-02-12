@@ -7,5 +7,5 @@ module.exports.isMobileDevice = function(device) {
   } else {
     return false;
   }
-  return /(iphone|android|sailfish|nokia|ipad)/i.test(deviceName);
+  return /(iphone|android|sailfish|nokia|ipad|kindle)/i.test(deviceName);
 }
