@@ -5,14 +5,13 @@ angular.module('devicelibApp')
     $scope.isApp = !Util.isAdmin($location);
     $scope.user = {};
 
-    // Remove the user name text before the rfid model updates
-    $scope.$on('$locationChangeSuccess', function(scope, path) {
-      if (path.split('/').pop() === 'logout') {
-        $scope.user = {};
-      } else {
-        $scope.user = rfid.user || {};
-      }
-    });
+    $scope.$watch(
+      function(scope) {
+        return rfid.user;
+      },
+      function(newVal, oldVal, scope) {
+        scope.user = newVal;
+      });
 
     $scope.isActive = function(route) {
       return route === $location.path();
