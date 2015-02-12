@@ -2,7 +2,7 @@
 
 angular.module('devicelibApp').directive('screensaver', function($window, $location, $interval, $log) {
   var screensaverTimeoutPromise;
-  var screensaverTimeoutSeconds = 2;
+  var screensaverTimeoutSeconds = 600;
   return {
     templateUrl: 'app/screensaver/screensaver.html',
     link: function($scope, element) {
