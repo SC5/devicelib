@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('devicelibApp').directive('screensaver', function($window, $location, $interval, $log) {
+angular.module('devicelibApp').directive('screensaver', function($window, $location, $interval, $log, socket) {
   var screensaverTimeoutPromise;
-  var screensaverTimeoutSeconds = 600;
+  var screensaverTimeoutSeconds = 2;
   return {
     templateUrl: 'app/screensaver/screensaver.html',
     link: function($scope, element) {
@@ -39,6 +39,16 @@ angular.module('devicelibApp').directive('screensaver', function($window, $locat
         });
       });
       element.on('touchstart', function() {
+        $scope.$apply(function() {
+          resetScreensaverCounter();
+        });
+      });
+      socket.socket.on('user:save', function() {
+        $scope.$apply(function() {
+          resetScreensaverCounter();
+        });
+      });
+      socket.socket.on('device:save', function() {
         $scope.$apply(function() {
           resetScreensaverCounter();
         });
