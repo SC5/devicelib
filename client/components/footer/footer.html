@@ -1,7 +1,7 @@
 <footer class="footer" ng-controller="FooterCtrl">
   <div class="container">
     <p ng-class="user.active ? 'user' : 'none'">
-      <span class="glyphicon glyphicon-user"></span>
+      <img class="user-icon-footer" ng-src="{{user.gravatar_img}}" />
       {{ user.name }}
     </p>
     <p>
