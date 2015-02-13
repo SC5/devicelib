@@ -5,12 +5,15 @@ var _ = require('lodash');
 var User = require('./user.model');
 var fs = require('fs');
 var request = require('request');
-    
+
 
 // Helper function to download Garavatar images
-var download = function(uri, filename, callback){
-  request.head(uri, function(err, res, body){
-    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+var download = function(uri, callback) {
+  request({url: uri, encoding: 'base64'}, function(err, res, body) {
+    if (!err && res.statusCode === 200) {
+      var prefix = 'data:' + res.headers['content-type'] + ';base64,';
+      callback(prefix, body);
+    }
   });
 };
 
@@ -24,18 +27,14 @@ var generate_gravatar = function(req_body, callback) {
   }
   if(req_body.email) {
     var hash = crypt.createHash('md5').update(req_body.email).digest('hex');
-    download('http://www.gravatar.com/avatar/' + hash, hash, function(){
-      var img = fs.readFileSync(hash);
-      req_body.gravatar_img = "data:image/jpeg;base64," + img.toString('base64');
-      fs.unlinkSync(hash);
+    download('http://www.gravatar.com/avatar/' + hash, function(prefix, img) {
+      req_body.gravatar_img = prefix + img;
       callback(req_body);
     });
   }
   else {
-    download('http://www.gravatar.com/avatar/default', "gravatar.tmp", function(){
-      var img = fs.readFileSync("gravatar.tmp");
-      req_body.gravatar_img = "data:image/jpeg;base64," + img.toString('base64');
-      fs.unlinkSync("gravatar.tmp");
+    download('http://www.gravatar.com/avatar/default', function(prefix, img) {
+      req_body.gravatar_img = prefix + img;
       callback(req_body);
     });
   }
