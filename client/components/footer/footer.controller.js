@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('FooterCtrl', function ($scope, $location, rfid, Util) {
+  .controller('FooterCtrl', function ($scope, socket, $location, rfid, Util) {
     $scope.isApp = !Util.isAdmin($location);
     $scope.user = {};
 
@@ -11,7 +11,8 @@ angular.module('devicelibApp')
       },
       function(newVal, oldVal, scope) {
         scope.user = newVal;
-      });
+      }
+    );
 
     $scope.isActive = function(route) {
       return route === $location.path();
@@ -19,5 +20,14 @@ angular.module('devicelibApp')
 
     $scope.$on('$locationChangeSuccess', function() {
       $scope.isApp = !Util.isAdmin($location);
+      bindUserListener();
     });
+    bindUserListener();
+
+    function bindUserListener() {
+      socket.unsyncUpdates('user');
+      socket.syncUpdates('user', [], function(eventName, user) {
+        $scope.user = user;
+      });
+    }
   });
