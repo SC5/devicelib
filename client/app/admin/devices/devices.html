@@ -4,10 +4,16 @@
       <h1 class="page-header">Devices</h1>
       <table class="table">
         <thead>
-        <tr><th>Label</th><th>Name</th><th>Serial number</th><th></th><th></th></tr>
+        <tr><th></th><th>Label</th><th>Name</th><th>Serial number</th><th></th><th></th></tr>
         </thead>
         <tbody ng-repeat="device in devices | orderBy:'name':0">
           <tr>
+            <td><img
+              class="user-icon-devices"
+              ng-class="device.loanedBy ? '' : 'hidden'"
+              ng-src={{device.loanedByImage}}
+              />
+            </td>
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.label" /></td>
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.name" /></td>
             <td>{{device.serialNumber}}</td>
