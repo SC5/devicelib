@@ -19,6 +19,7 @@ angular.module('devicelibApp')
     });
 
     $scope.$on('$destroy', function() {
+      $timeout.cancel(timeout);
       socket.unsyncUpdates('user');
     });
   });
