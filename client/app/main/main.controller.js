@@ -18,19 +18,6 @@ angular.module('devicelibApp')
     }
   });
 
-  $scope.devices = Device.query();
-  socket.syncUpdates('device', $scope.devices, function(event, device) {
-    if (device.status === 'available' && !!!device.label) {
-      $scope.displayModal = Modal.confirm.newDevice(device, function(data) {
-        var d = new Device(device);
-        d.name = data.name;
-        d.label = data.label;
-        d.$update();
-      });
-      $scope.displayModal();
-    }
-  });
-
   socket.syncUpdates('user', [], function(event, user) {
     if(user.nonregistered) {
       $scope.displayModal = Modal.confirm.newUser(function(res) {
@@ -53,7 +40,6 @@ angular.module('devicelibApp')
   });
 
   $scope.$on('$destroy', function () {
-    socket.unsyncUpdates('device');
     socket.unsyncUpdates('user');
   });
 
