@@ -24,6 +24,7 @@ angular.module('devicelibApp')
 
   $scope.save = function(form) {
     if(form.$valid) {
+      $scope.user.nonregistered = false;
       if ($scope.user._id) {
         $scope.user.$update(function() {
           $scope.addAlert('success', 'User details updated.');

@@ -9,7 +9,7 @@ var UserSchema = new Schema({
   rfid: String,
   gravatar_img: String,
   active: Boolean,
-  nonregistered: Boolean,
+  nonregistered: {type: Boolean, default: true}
 });
 
 module.exports = mongoose.model('User', UserSchema);
