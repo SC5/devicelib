@@ -26,6 +26,10 @@ function updateFoundDevice(query) {
   Device.findOne(query, function(err, dev) {
     if (err) {
       console.log("Error in find devices", err);
+      return;
+    }
+    if (!dev) {
+      dev = new Device();
     }
     if (dev.loanedBy) {
       loanController.loanEnd(dev);
