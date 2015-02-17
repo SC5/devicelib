@@ -6,13 +6,15 @@ var Loan = require('./loan.model');
 
 // Get list of loans
 exports.index = function(req, res) {
-  var sortFields = ['username', 'deviceName', 'deviceLabel', 'start', 'end'];
-  var sort = {'end': 'desc'};
+  var sortFields = ['userName', 'deviceName', 'deviceLabel', 'start', 'end'];
+  var sort = {};
   var limit = req.query.limit ? parseInt(req.query.limit) : 20;
   var skip = req.query.skip ? parseInt(req.query.skip) : 0;
   if (req.query.sortField && sortFields.indexOf(req.query.sortField) !== -1) {
-    var sortField = req.query.sortField.toLowerCase();
+    var sortField = req.query.sortField;
     sort[sortField] = req.query.sortType.toLowerCase() === 'desc' ? 'desc' : 'asc';
+  } else {
+    sort = {'end': 'desc'};
   }
 
   countModels(Loan).then(function(totalCount) {

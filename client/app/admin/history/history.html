@@ -5,7 +5,13 @@
       <div class="loading" ng-show="loading">Loading...</div>
       <table ng-hide="loading" class="table">
         <thead>
-        <tr><th>Device Label</th><th>Device Name</th><th>Lender</th><th>Start Time</th><th>End Time</th></tr>
+        <tr>
+          <th ng-click="sortBy('deviceLabel')">Device Label</th>
+          <th ng-click="sortBy('deviceName')">Device Name</th>
+          <th ng-click="sortBy('userName')">Lender</th>
+          <th ng-click="sortBy('start')">Start Time</th>
+          <th ng-click="sortBy('end')">End Time</th>
+        </tr>
         </thead>
         <tbody ng-repeat="loan in loans">
           <tr>
