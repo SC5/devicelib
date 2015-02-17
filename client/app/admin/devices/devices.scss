@@ -1,9 +1,14 @@
-.connected {
+.float-right {
   float: right;
 }
 
 .table-icon {
   max-width: 22px;
+}
+
+.table-user {
+  border-top: 0px !important;
+  min-width: 140px;
 }
 
 .user-icon-devices {
