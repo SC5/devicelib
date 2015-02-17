@@ -33,7 +33,7 @@ angular.module('devicelibApp')
 
     function getGravatars() {
       $scope.devices.forEach(function(device) {
-        if (device.loanedBy && !device.loanedByImage) {
+        if (device.loanedBy) {
           User.query(function(u) {
             device.loanedByImage = u[0].gravatar_img;
           });
