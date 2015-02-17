@@ -4,9 +4,13 @@
       <h1 class="page-header">Devices</h1>
       <table class="table">
         <thead>
-        <tr><th>Label</th><th>Name</th><th></th><th></th><th></th></tr>
+        <tr table-sort-indicator>
+          <th ng-click="sort.field = 'label';sort.type = sort.type==='asc'?'desc':'asc'">Label</th>
+          <th ng-click="sort.field = 'name';sort.type = sort.type==='asc'?'desc':'asc'">Name</th>
+          <th></th><th></th><th></th>
+        </tr>
         </thead>
-        <tbody ng-repeat="device in devices | orderBy:'name':0">
+        <tbody ng-repeat="device in devices | orderBy:sort.field:sort.type==='asc'?0:1">
           <tr>
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.label" /></td>
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.name" /></td>

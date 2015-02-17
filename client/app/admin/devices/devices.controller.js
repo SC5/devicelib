@@ -7,6 +7,7 @@ angular.module('devicelibApp')
     $scope.devices = Device.query(function() {
       getGravatars();
     });
+    $scope.sort = {field: 'label', type: 'asc'};
     socket.syncUpdates('device', $scope.devices, getGravatars);
 
     $scope.removeDevice = function(device) {
