@@ -37,7 +37,10 @@ angular.module('devicelibApp')
             device.loanedByImage = u[0].gravatar_img;
           });
         } else {
-          device.loanedByImage = undefined;
+          if (device.status !== 'available') {
+            device.loanedBy = 'Device Pirate';
+            device.loanedByImage = '/assets/images/pirate.png';
+          }
         }
       });
     }
