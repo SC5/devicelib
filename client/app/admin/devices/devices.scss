@@ -7,3 +7,14 @@
   border-radius: 50%;
   border: 2px solid #ccc;
 }
+
+.user-icon-hidden {
+  visibility: hidden;
+  min-width: 20px;
+}
+
+.serial-number {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
