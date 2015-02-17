@@ -29,6 +29,16 @@ angular.module('devicelibApp')
     $scope.currentPage = 1;
     $scope.itemsPerPage = defaultLimitPerPage;
 
+    $scope.sortBy = function(field) {
+      if ($scope.sort.field === field) {
+        $scope.sort.type = $scope.sort.type === 'desc' ? 'asc' : 'desc';
+      } else {
+        $scope.sort.field = field;
+      }
+      $scope.currentPage = 1;
+      $scope.pageChanged();
+    }
+
     // TODO make sortable from ui
     $scope.pageChanged = function() {
       setLoading(true, true);
@@ -36,7 +46,7 @@ angular.module('devicelibApp')
         {
           skip: $scope.itemsPerPage * ($scope.currentPage-1),
           limit: defaultLimitPerPage,
-          sortField: $scope.field,
+          sortField: $scope.sort.field,
           sortType: $scope.sort.type
         }, function() {
           setLoading(false);
