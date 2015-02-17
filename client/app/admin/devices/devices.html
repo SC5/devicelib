@@ -4,28 +4,28 @@
       <h1 class="page-header">Devices</h1>
       <table class="table">
         <thead>
-        <tr><th></th><th></th><th>Label</th><th>Name</th><th>Serial number</th><th></th></tr>
+        <tr><th></th><th>Label</th><th>Name</th><th>Serial number</th><th></th><th></th></tr>
         </thead>
         <tbody ng-repeat="device in devices | orderBy:'name':0">
           <tr>
-            <td class="col-lg-1">
+            <td class="table-icon">
               <img
                 class="user-icon-devices"
                 ng-class="device.loanedBy ? '' : 'user-icon-hidden'"
                 ng-src={{device.loanedByImage}}
                 />
             </td>
-            <td class="col-lg-1">
+            <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.label" /></td>
+            <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.name" /></td>
+            <td class="serial-number">{{device.serialNumber}}</td>
+            <td>
+            <td class="table-icon">
               <span class="glyphicon connected"
                     ng-class="device.status === 'available' ? 'glyphicon-ok' : 'glyphicon-remove'"
                 >
               </span>
             </td>
-            <td class="col-lg-2 editable"><input blurevent type="text" placeholder="model" data-ng-model="device.label" /></td>
-            <td class="col-lg-2 editable"><input blurevent type="text" placeholder="model" data-ng-model="device.name" /></td>
-            <td class="col-lg-3 serial-number">{{device.serialNumber}}</td>
-            <td>
-            <td class="col-lg-1">
+            <td class="table-icon">
               <a class="remove-user-link" ng-click="removeDevice(device)">
                 <span class="glyphicon glyphicon-trash" title="Remove device"></span>
               </a>
