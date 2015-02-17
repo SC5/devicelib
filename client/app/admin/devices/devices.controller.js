@@ -1,11 +1,13 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('DevicesCtrl', function ($scope, Device, $log, socket) {
+  .controller('DevicesCtrl', function ($scope, Device, $log, socket, User) {
     $log.debug('devices');
     $scope.alerts = [];
-    $scope.devices = Device.query();
-    socket.syncUpdates('device', $scope.devices);
+    $scope.devices = Device.query(function() {
+      getGravatars();
+    });
+    socket.syncUpdates('device', $scope.devices, getGravatars);
 
     $scope.removeDevice = function(device) {
       Device.remove({id: device._id});
@@ -27,4 +29,16 @@ angular.module('devicelibApp')
     $scope.$on('$destroy', function () {
      socket.unsyncUpdates('device');
     });
+
+    function getGravatars() {
+      $scope.devices.forEach(function(device) {
+        if (device.loanedBy) {
+          User.query(function(u) {
+            device.loanedByImage = u[0].gravatar_img;
+          });
+        } else {
+          device.loanedByImage = undefined;
+        }
+      });
+    }
   });
