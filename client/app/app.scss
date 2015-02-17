@@ -25,6 +25,7 @@ input {
 
 // Component styles are injected through grunt
 // injector
+@import '_mixins.scss';
 @import 'admin/devices/devices.scss';
 @import 'admin/history/history.scss';
 @import 'admin/user/user.scss';
@@ -32,7 +33,6 @@ input {
 @import 'loan/loan.scss';
 @import 'logout/logout.scss';
 @import 'main/main.scss';
-@import 'mixins.scss';
 @import 'screensaver/screensaver.scss';
 @import 'footer/footer.scss';
 @import 'modal/modal.scss';

@@ -1,6 +1,7 @@
-div.loading {
-  height: auto;
-  width: auto;
-  text-align: center;
-  font-size: 25px;
+th {
+  @include noselect();
+  cursor: pointer;
+  span {
+    margin-left: 5px;
+  }
 }
