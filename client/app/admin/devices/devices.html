@@ -5,8 +5,9 @@
       <table class="table">
         <thead>
         <tr table-sort-indicator>
-          <th ng-click="sort.field = 'label';sort.type = sort.type==='asc'?'desc':'asc'">Label</th>
-          <th ng-click="sort.field = 'name';sort.type = sort.type==='asc'?'desc':'asc'">Name</th>
+          <th ng-click="sort.field = 'label'; sort.type = sort.type === 'asc' ? 'desc' : 'asc'">Label</th>
+          <th ng-click="sort.field = 'name'; sort.type = sort.type === 'asc' ? 'desc' : 'asc'">Name</th>
+          <th ng-click="sort.field = 'lastSeen'; sort.type = sort.type === 'asc'? 'desc' : 'asc'">Last Seen</th>
           <th class="no-sort"></th>
           <th class="no-sort"></th>
           <th class="no-sort"></th>
@@ -16,6 +17,7 @@
           <tr>
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.label" /></td>
             <td class="editable"><input blurevent type="text" placeholder="model" data-ng-model="device.name" /></td>
+            <td>{{ device.lastSeen | date: 'dd.MM.yyyy HH:mm:ss' }}</td>
             <td class="float-right table-user">
               <img
                 class="user-icon-devices"
