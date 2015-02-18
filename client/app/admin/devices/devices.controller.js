@@ -7,6 +7,7 @@ angular.module('devicelibApp')
     $scope.devices = Device.query(function() {
       getGravatars();
     });
+    $scope.sort = {field: 'label', type: 'asc'};
     socket.syncUpdates('device', $scope.devices, getGravatars);
 
     $scope.removeDevice = function(device) {
@@ -32,7 +33,7 @@ angular.module('devicelibApp')
 
     function getGravatars() {
       $scope.devices.forEach(function(device) {
-        if (device.loanedBy && !device.loanedByImage) {
+        if (device.loanedBy && device.loanedBy !== 'Device Pirate') {
           User.query(function(u) {
             device.loanedByImage = u[0].gravatar_img;
           });
