@@ -12,7 +12,11 @@ if (process.platform === 'linux') {
   usbReader = require('./usb.detection');
 }
 
-usbReader.findDevices(findDevicesHandler);
+console.log("Reset available status on start");
+Device.update({status: 'available'}, {status: 'basket'}, {multi: true}, function() {
+  usbReader.findDevices(findDevicesHandler);
+});
+
 function findDevicesHandler(devices) {
   for (var i = 0; i < devices.length; ++i) {
     var device = devices[i];
