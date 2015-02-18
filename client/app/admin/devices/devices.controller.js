@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('DevicesCtrl', function ($scope, Device, $log, socket, User) {
+  .controller('DevicesCtrl', function ($scope, Device, $log, socket, User, Modal) {
     $log.debug('devices');
     $scope.alerts = [];
     $scope.devices = Device.query(function() {
@@ -11,8 +11,13 @@ angular.module('devicelibApp')
     socket.syncUpdates('device', $scope.devices, getGravatars);
 
     $scope.removeDevice = function(device) {
-      Device.remove({id: device._id});
-      $scope.addAlert('success', 'Device deleted');
+      $scope.displayModal = Modal.confirm.remove('device ' + device.label, function(remove) {
+        if (remove) {
+          Device.remove({id: device._id});
+          $scope.addAlert('success', 'Device deleted');
+        }
+      });
+      $scope.displayModal();
     };
 
     $scope.addAlert = function(type, msg) {

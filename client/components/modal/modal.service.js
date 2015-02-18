@@ -23,6 +23,14 @@ angular.module('devicelibApp')
         });
       }
 
+      if (type === 'remove') {
+        return $modal.open({
+          templateUrl: 'components/modal/modal.remove.html',
+          windowClass: modalClass,
+          scope: modalScope
+        });
+      }
+
       return $modal.open({
         templateUrl: 'components/modal/modal.html',
         windowClass: modalClass,
@@ -95,6 +103,31 @@ angular.module('devicelibApp')
                 }
               }
             }, 'modal-danger', 'device');
+            modal.result.then(cb);
+          }
+        },
+        remove: function(targetName, cb) {
+          cb = cb || angular.noop;
+          return function() {
+            var modal;
+            modal = openModal({
+              modal: {
+                dismissable: true,
+                title: 'Are you sure you want to remove ' + targetName,
+                buttonYes: {
+                  text: 'Yes',
+                  click: function() {
+                    modal.close(true);
+                  }
+                },
+                buttonNo: {
+                  text: 'Cancel',
+                  click: function() {
+                    modal.close(false);
+                  }
+                }
+              }
+            }, 'modal-danger', 'remove');
             modal.result.then(cb);
           }
         }
