@@ -9,7 +9,18 @@ var UserSchema = new Schema({
   rfid: String,
   gravatar_img: String,
   active: Boolean,
-  nonregistered: {type: Boolean, default: true}
+  nonregistered: {type: Boolean, default: true},
+  created: Date,
+  updated: Date
+});
+
+UserSchema.pre('save', function(next){
+  var now = new Date();
+  this.updated = now;
+  if (!this.created) {
+    this.created = now;
+  }
+  next();
 });
 
 module.exports = mongoose.model('User', UserSchema);
