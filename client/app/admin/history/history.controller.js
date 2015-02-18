@@ -1,20 +1,15 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('HistoryCtrl', function ($scope, $http, $log, $timeout, socket, Loan) {
+  .controller('HistoryCtrl', function ($scope, $http, $log, $timeout, socket, Loan, LoanHistory) {
     var defaultLimitPerPage = 20;
     $scope.loading = true;
     $scope.sort = {field: 'end', type: 'desc'};
 
-    // Using $http instead of Loan $resource because of meta information (meta.totalItems)
-    $http({
-      url: '/api/loans',
-      params: {skip: 0, limit: defaultLimitPerPage, sortField: $scope.sort.field, sortType: $scope.sort.type },
-      method: 'GET'
-    })
-    .success(function(data) {
-      $scope.totalItems = data.meta.totalItems;
-      $scope.loans = data.results;
+    LoanHistory.getLoans(defaultLimitPerPage, $scope.sort.field, $scope.sort.type)
+    .then(function(result) {
+      $scope.totalItems = result.totalItems;
+      $scope.loans = result.loans;
     });
 
     socket.syncUpdates('loan', [], function(event, item) {
@@ -36,7 +31,7 @@ angular.module('devicelibApp')
       }
       $scope.currentPage = 1;
       $scope.pageChanged();
-    }
+    };
 
     // TODO make sortable from ui
     $scope.pageChanged = function() {
@@ -46,9 +41,10 @@ angular.module('devicelibApp')
           limit: defaultLimitPerPage,
           sortField: $scope.sort.field,
           sortType: $scope.sort.type
-        }, function() {
+        },
+        function() {
           $scope.loans = items;
-        });
+        }
+      );
     };
-
   });
