@@ -7,7 +7,9 @@
         <tr table-sort-indicator>
           <th ng-click="sort.field = 'label';sort.type = sort.type==='asc'?'desc':'asc'">Label</th>
           <th ng-click="sort.field = 'name';sort.type = sort.type==='asc'?'desc':'asc'">Name</th>
-          <th></th><th></th><th></th>
+          <th class="no-sort"></th>
+          <th class="no-sort"></th>
+          <th class="no-sort"></th>
         </tr>
         </thead>
         <tbody ng-repeat="device in devices | orderBy:sort.field:sort.type==='asc'?0:1">

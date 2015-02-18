@@ -10,7 +10,11 @@ angular.module('devicelibApp')
           '<span ng-class="{\'glyphicon-chevron-up\': sort.type===\'desc\', '+
            '\'glyphicon-chevron-down\': sort.type===\'asc\'}" class="glyphicon" aria-hidden="true"></span>'
         );
-        var children = element[0].children || [];
+        var children = element.children().map(function(i, th) {
+          if (!angular.element(th).hasClass('no-sort')) {
+            return th;
+          }
+        });
         for (var i = 0; i < children.length; ++i) {
           angular.element(children[i]).on('click', function(e) {
             var el = angular.element(e.target);
