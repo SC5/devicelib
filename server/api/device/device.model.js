@@ -15,7 +15,18 @@ var DeviceSchema = new Schema({
   productId: String,
   manufacturer: String,
   serialNumber: String,
-  deviceAddress: String
+  deviceAddress: String,
+  created: Date,
+  updated: Date
+});
+
+DeviceSchema.pre('save', function(next){
+  var now = new Date();
+  this.updated = now;
+  if (!this.created) {
+    this.created = now;
+  }
+  next();
 });
 
 module.exports = mongoose.model('Device', DeviceSchema);
