@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .service('LoanHistory', function ($q, $http) {
+  .factory('History', function ($q, $http) {
     return {
       getLoans: function(limit, sortField, sortType) {
         var defer = $q.defer();

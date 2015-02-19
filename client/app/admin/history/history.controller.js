@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('devicelibApp')
-  .controller('HistoryCtrl', function ($scope, $http, $log, $timeout, socket, Loan, LoanHistory) {
+  .controller('HistoryCtrl', function ($scope, $http, $log, $timeout, socket, Loan, History) {
     var defaultLimitPerPage = 20;
     $scope.loading = true;
     $scope.sort = {field: 'end', type: 'desc'};
 
-    LoanHistory.getLoans(defaultLimitPerPage, $scope.sort.field, $scope.sort.type)
+    History.getLoans(defaultLimitPerPage, $scope.sort.field, $scope.sort.type)
     .then(function(result) {
       $scope.totalItems = result.totalItems;
       $scope.loans = result.loans;
