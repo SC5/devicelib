@@ -35,7 +35,7 @@ gem install sass
 ### Ubuntu
 
 ```
-sudo apt-get install mongod sass
+sudo apt-get install build-essential mongodb sass libasound2-dev libmp3lame-dev libudev-dev
 ```
 
 ### Dependencies
