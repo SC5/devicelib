@@ -54,12 +54,8 @@ module.exports = function (socketio, serialPort) {
       if (err) {
         console.log("error occurred while querying by rfid");
       }
-      if (user) {
+      if (user && user.nonregistered === false) {
         messageController.registered(user);
-        if(user.nonregistered) {
-          user.remove();
-          return;
-        }
         if (user.active) { // user logged in, log out
           console.info('log out user', user.name);
           user.active = false;
@@ -68,8 +64,10 @@ module.exports = function (socketio, serialPort) {
           user.active = true;
         }
         user.save();
-      }
-      else {
+      } else if (user && user.nonregistered) {
+        user.active = false;
+        user.save();
+      } else {
         User.create({name:'', rfid: data, nonregistered: true}, function(err, usr) {
         });
       }
